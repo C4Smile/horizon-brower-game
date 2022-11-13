@@ -40,7 +40,6 @@ const SignIn = () => {
     setLoading(true);
     try {
       const response = await login(user, password);
-      console.log(response);
       const { id, token, expiration } = response.data;
       logUser(remember, { id });
       createCookie(config.basicKey, expiration, token);
