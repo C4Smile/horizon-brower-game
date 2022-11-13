@@ -51,6 +51,24 @@ export const login = async (user, password) => {
 };
 
 /**
+ * Takes a user object and sends it to the backend to be authenticated
+ * @param {string} user - the user name
+ * @returns The response from the server.
+ */
+export const logout = async (user) => {
+  const response = await axios.post(
+    // @ts-ignore
+    `${config.apiUrl}user/logout`,
+    { user },
+    {
+      headers: getAuth,
+    }
+  );
+  const data = await response.data;
+  return data;
+};
+
+/**
  * Takes a user object as an argument, and returns a promise that resolves to the data returned from
  * the API
  * @param {object} user - This is the user object that we are sending to the server.

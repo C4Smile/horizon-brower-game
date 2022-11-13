@@ -84,11 +84,7 @@ export const passwordsAreValid = (password, rpassword, user) => {
 
 export const getUserName = () => {
   // @ts-ignore
-  if (localStorage.getItem(config.userCookie) !== null)
-    // @ts-ignore
-    return localStorage.getItem(config.userCookie);
-  // @ts-ignore
-  return sessionStorage.getItem(config.userCookie);
+  return getCookie(config.userCookie);
 };
 
 /**
@@ -163,7 +159,12 @@ export const logUser = (remember, user) => {
   const minutes = date.getMinutes();
   date.setMinutes(minutes + 60);
   const stringDate = `${date.getFullYear()}/${date.getMonth()}/${date.getDate()} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
-  createCookie(config.userCookie, stringDate, user);
+  createCookie(config.userCookie, stringDate, user.id);
+};
+
+export const logoutUser = () => {
+  deleteCookie(config.basicKey);
+  deleteCookie(config.userCookie);
 };
 
 /**

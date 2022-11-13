@@ -28,6 +28,12 @@ import Settings from "./views/Home/Settings";
 import { useUser } from "./context/UserProvider";
 import { useMode } from "./context/ModeProvider";
 
+// utils
+import { getUserName, userLogged } from "./utils/functions";
+
+// services
+import { getUserData } from "./services/nations/get";
+
 // theme
 import light from "./assets/theme/light";
 import dark from "./assets/theme/dark";
@@ -43,11 +49,17 @@ const App = () => {
         : light.palette.background.screen;
   }, [modeState]);
 
+  const fetch = async () => {
+    try {
+      const response = await getUserData(getUserName());
+      console.log(response);
+    } catch (err) {
+      window.location.href = "/auth/sign-out";
+    }
+  };
+
   useEffect(() => {
-    setUserState({
-      type: "set",
-      user: "Sito",
-    });
+    if (userLogged()) fetch();
   }, []);
 
   return (

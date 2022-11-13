@@ -12,6 +12,9 @@ import PropTypes from "prop-types";
 // contexts
 import { useMode } from "../../context/ModeProvider";
 
+// images
+import compass from "../../assets/images/Compass.svg";
+
 const Loading = (props) => {
   const { modeState } = useMode();
 
@@ -36,10 +39,13 @@ const Loading = (props) => {
         ...sx,
       }}
     >
-      <FiCompass
+      <img
+        src={compass}
+        alt="compass"
         className={`loading ${css({
           color: modeState.palette.font.h1.color,
-          fontSize: "60px",
+          width: "65px",
+          filter: modeState.mode === "light" ? "" : "invert(1)",
         })}`}
       />
     </SitoContainer>
