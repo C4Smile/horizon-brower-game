@@ -44,7 +44,7 @@
         },
         {
           "Label": "Cerrar sesión",
-          "Link": "/sign-out"
+          "Link": "/auth/sign-out"
         }
       ]
     },

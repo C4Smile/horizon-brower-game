@@ -12,7 +12,7 @@ body {
 }
 
 .loading {
-  animation: loading infinite 1s linear;
+  animation: loading infinite 3s linear;
 }
 
 @keyframes loading {

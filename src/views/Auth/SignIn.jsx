@@ -26,14 +26,15 @@ import config from "../../config";
 const SignIn = () => {
   const navigate = useNavigate();
   const { languageState } = useLanguage();
-  const [loading, setLoading] = useState(false);
   const { setNotificationState } = useNotification();
+
+  const [loading, setLoading] = useState(false);
+  const [remember, setRemember] = useState(false);
 
   const showNotification = (ntype, message) =>
     setNotificationState({ type: "set", ntype, message });
 
   const { register, handleSubmit } = useForm();
-  const [remember, setRemember] = useState(false);
 
   const onSubmit = async (d) => {
     const { user, password } = d;
@@ -47,9 +48,7 @@ const SignIn = () => {
         if (userLogged()) navigate("/");
       }, 100);
     } catch (error) {
-      console.log(error);
       const data = await error.response.data;
-      console.log(data.error);
       showNotification("error", languageState.texts.Errors[data.error]);
     }
     setLoading(false);
