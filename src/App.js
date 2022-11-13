@@ -32,9 +32,6 @@ import { useMode } from "./context/ModeProvider";
 import light from "./assets/theme/light";
 import dark from "./assets/theme/dark";
 
-// for test
-import { NationsEnum } from "./models/Nations";
-
 const App = () => {
   const { modeState } = useMode();
   const { setUserState } = useUser();
@@ -50,9 +47,6 @@ const App = () => {
     setUserState({
       type: "set",
       user: "Sito",
-      resources: NationsEnum.R2FyZGVuIFBhcmsncyBCYW5kaXQgQm95cw.Currencies.map(
-        (item) => 0
-      ),
     });
   }, []);
 
