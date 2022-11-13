@@ -5,32 +5,40 @@
       "Subtitle": "en el navegador",
       "Links": [
         {
-          "Label": "Fortaleza",
+          "Label": "Ayuntamiento",
           "Link": "/"
-        },
-        {
-          "Label": "Recursos",
-          "Link": "/resources"
         },
         {
           "Label": "Edificios",
           "Link": "/buildings"
         },
         {
-          "Label": "Tropas",
-          "Link": "/troops"
+          "Label": "Investigaciones",
+          "Link": "/researches"
         },
         {
-          "Label": "Tecnología",
-          "Link": "/technologies"
+          "Label": "Arsenal",
+          "Link": "/arsenal"
         },
         {
-          "Label": "Héroes",
-          "Link": "/heros"
+          "Label": "Astillero",
+          "Link": "/dock"
         },
         {
-          "Label": "Mercado",
-          "Link": "/market"
+          "Label": "Flota",
+          "Link": "/fleet"
+        },
+        {
+          "Label": "Mapa",
+          "Link": "/map"
+        },
+        {
+          "Label": "Rutas Comerciales",
+          "Link": "/routes"
+        },
+        {
+          "Label": "Defensas",
+          "Link": "/defenses"
         }
       ],
       "Player": [

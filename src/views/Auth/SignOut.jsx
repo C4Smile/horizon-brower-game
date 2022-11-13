@@ -10,12 +10,16 @@ import { logout } from "../../services/post";
 // utils
 import { getUserName, logoutUser } from "../../utils/functions";
 
+import config from "../../config";
+
 const SignOut = () => {
   const navigate = useNavigate();
 
   const signOut = async () => {
     try {
       await logout(getUserName());
+      sessionStorage.removeItem(config.userNick);
+      sessionStorage.removeItem(config.userNation);
     } catch (err) {
       console.log(err);
     }

@@ -32,11 +32,13 @@ import { useMode } from "./context/ModeProvider";
 import { getUserName, userLogged } from "./utils/functions";
 
 // services
-import { getUserData } from "./services/nations/get";
+import { getUserData } from "./services/nations/post";
 
 // theme
 import light from "./assets/theme/light";
 import dark from "./assets/theme/dark";
+
+import config from "./config";
 
 const App = () => {
   const { modeState } = useMode();
@@ -52,7 +54,9 @@ const App = () => {
   const fetch = async () => {
     try {
       const response = await getUserData(getUserName());
-      console.log(response);
+      const { data } = response;
+      sessionStorage.setItem(config.userNation, data.nation);
+      sessionStorage.setItem(config.userNick, data.nick);
     } catch (err) {
       window.location.href = "/auth/sign-out";
     }
