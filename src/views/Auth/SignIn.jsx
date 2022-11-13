@@ -44,17 +44,14 @@ const SignIn = () => {
       const { id, token, expiration } = response.data;
       logUser(remember, { id });
       createCookie(config.basicKey, expiration, token);
-      showNotification("success", languageState.texts.Messages.LoginSuccessful);
       setTimeout(() => {
         if (userLogged()) navigate("/");
       }, 100);
     } catch (error) {
       console.log(error);
-      console.log(languageState.texts.Errors[error.response.data.error]);
-      showNotification(
-        "error",
-        languageState.texts.Errors[error.response.data.error]
-      );
+      const data = await error.response.data;
+      console.log(data.error);
+      showNotification("error", languageState.texts.Errors[data.error]);
     }
     setLoading(false);
   };
