@@ -1,10 +1,20 @@
+import { FiCompass } from "react-icons/fi";
+
+// @emotion/css
+import { css } from "@emotion/css";
+
 // sito components
 import SitoContainer from "sito-container";
 
 // prop-types
 import PropTypes from "prop-types";
 
+// contexts
+import { useMode } from "../../context/ModeProvider";
+
 const Loading = (props) => {
+  const { modeState } = useMode();
+
   const { sx, visible } = props;
 
   return (
@@ -22,9 +32,17 @@ const Loading = (props) => {
         top: 0,
         left: 0,
         backdropFilter: "blur(4px)",
+        background: `${modeState.palette.background.sidebar}ce`,
         ...sx,
       }}
-    ></SitoContainer>
+    >
+      <FiCompass
+        className={`loading ${css({
+          color: modeState.palette.font.h1.color,
+          fontSize: "60px",
+        })}`}
+      />
+    </SitoContainer>
   );
 };
 

@@ -15,6 +15,9 @@ import { useNotification } from "../../context/NotificationProvider";
 // services
 import { login } from "../../services/post";
 
+//own components
+import Loading from "../../components/Loading/Section";
+
 // utils
 import { logUser, createCookie, userLogged } from "../../utils/functions";
 
@@ -23,6 +26,7 @@ import config from "../../config";
 const SignIn = () => {
   const navigate = useNavigate();
   const { languageState } = useLanguage();
+  const [loading, setLoading] = useState(false);
   const { setNotificationState } = useNotification();
 
   const showNotification = (ntype, message) =>
@@ -33,8 +37,10 @@ const SignIn = () => {
 
   const onSubmit = async (d) => {
     const { user, password } = d;
+    setLoading(true);
     try {
       const response = await login(user, password);
+      console.log(response);
       const { id, token, expiration } = response.data;
       logUser(remember, { id });
       createCookie(config.basicKey, expiration, token);
@@ -44,8 +50,13 @@ const SignIn = () => {
       }, 100);
     } catch (error) {
       console.log(error);
-      showNotification("error", String(error));
+      console.log(languageState.texts.Errors[error.response.data.error]);
+      showNotification(
+        "error",
+        languageState.texts.Errors[error.response.data.error]
+      );
     }
+    setLoading(false);
   };
 
   return (
@@ -72,8 +83,8 @@ const SignIn = () => {
         ></SitoContainer>
       </SitoContainer>
       <SitoContainer
-        justifyContent="center"
         alignItems="center"
+        justifyContent="center"
         sx={{ height: "100%" }}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -86,8 +97,10 @@ const SignIn = () => {
               marginLeft: "20px",
               border: "2px solid #000000",
               padding: "50px",
+              position: "relative",
             }}
           >
+            <Loading visible={loading} />
             <h1 className={css({ margin: 0 })}>
               {languageState.texts.SignIn.Title}
             </h1>
