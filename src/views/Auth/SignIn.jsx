@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -14,6 +15,11 @@ import { useNotification } from "../../context/NotificationProvider";
 // services
 import { login } from "../../services/post";
 
+// utils
+import { logUser, createCookie, userLogged } from "../../utils/functions";
+
+import config from "../../config";
+
 const SignIn = () => {
   const navigate = useNavigate();
   const { languageState } = useLanguage();
@@ -23,13 +29,19 @@ const SignIn = () => {
     setNotificationState({ type: "set", ntype, message });
 
   const { register, handleSubmit } = useForm();
+  const [remember, setRemember] = useState(false);
 
   const onSubmit = async (d) => {
     const { user, password } = d;
     try {
       const response = await login(user, password);
-      console.log(response);
       const { id, token, expiration } = response.data;
+      logUser(remember, { id });
+      createCookie(config.basicKey, expiration, token);
+      showNotification("success", languageState.texts.Messages.LoginSuccessful);
+      setTimeout(() => {
+        if (userLogged()) navigate("/");
+      }, 100);
     } catch (error) {
       console.log(error);
       showNotification("error", String(error));

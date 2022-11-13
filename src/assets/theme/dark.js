@@ -9,6 +9,30 @@ const palette = {
     main: "#00B38A",
     dark: "#007D58",
   },
+  error: {
+    main: "#f44336",
+    light: "#f6685e",
+    dark: "#aa2e25",
+    contrastText: "#ffffff",
+  },
+  warning: {
+    main: "#ff9800",
+    light: "#ffac33",
+    dark: "#b26a00",
+    contrastText: "rgba(0,0,0,0.87)",
+  },
+  info: {
+    main: "#2196f3",
+    light: "#4dabf5",
+    dark: "#1769aa",
+    contrastText: "#ffffff",
+  },
+  success: {
+    main: "#4caf50",
+    light: "#6fbf73",
+    dark: "#357a38",
+    contrastText: "rgba(0,0,0,0.87)",
+  },
   font: {
     h1: { color: "#fff", fontFamily: "Josefin Sans, sans-serif" },
     h2: { color: "#fff", fontFamily: "Josefin Sans, sans-serif" },
