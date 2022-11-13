@@ -42,6 +42,7 @@ const palette = {
     p: { color: "#eee", fontFamily: "Lexend Deca, sans-serif" },
     span: { color: "#eee", fontFamily: "Lexend Deca, sans-serif" },
     label: { color: "#eee", fontFamily: "Lexend Deca, sans-serif" },
+    li: { color: "#eee", fontFamily: "Lexend Deca, sans-serif" },
   },
   a: {
     fontSize: "12px",

@@ -56,6 +56,9 @@
         }
       ]
     },
+    "SelectNation": {
+      "Title": "Selecciona tu nación"
+    },
     "SignIn": {
       "Title": "Iniciar sesión",
       "Inputs": [

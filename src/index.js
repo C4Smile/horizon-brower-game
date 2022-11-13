@@ -1,4 +1,5 @@
 import * as ReactDOMClient from "react-dom/client";
+import "tippy.js/dist/tippy.css"; // optional
 
 // font
 import "@fontsource/josefin-sans";
