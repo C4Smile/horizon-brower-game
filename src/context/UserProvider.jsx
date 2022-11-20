@@ -11,11 +11,16 @@ const userReducer = (userState, action) => {
   const { type } = action;
   switch (type) {
     case "set": {
-      const { user, resources } = action;
+      const { user, socket, resources } = action;
       return {
         user,
+        socket,
         resources,
       };
+    }
+    case "logOut": {
+      userState.socket.disconnect();
+      return {};
     }
     default:
       throw new Error(`Unhandled action type: ${type}`);

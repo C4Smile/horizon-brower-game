@@ -8,7 +8,11 @@ import SitoContainer from "sito-container";
 // @emotion/css
 import { css } from "@emotion/css";
 
+// socket
+import io from "socket.io-client";
+
 // contexts
+import { useUser } from "../../context/UserProvider";
 import { useLanguage } from "../../context/LanguageProvider";
 import { useNotification } from "../../context/NotificationProvider";
 
@@ -25,6 +29,8 @@ import config from "../../config";
 
 const SignIn = () => {
   const navigate = useNavigate();
+
+  const { setUserState } = useUser();
   const { languageState } = useLanguage();
   const { setNotificationState } = useNotification();
 
@@ -43,6 +49,9 @@ const SignIn = () => {
       const response = await login(user, password);
       const { id, token, expiration } = response.data;
       logUser(remember, { id });
+      const socket = io(config.socketUrl);
+      socket.on("connect", () => socket.emit("user_connecting", id));
+      setUserState({ type: "set", user: id, socket, resources: [] });
       createCookie(config.basicKey, expiration, token);
       setTimeout(() => {
         if (userLogged()) navigate("/");
