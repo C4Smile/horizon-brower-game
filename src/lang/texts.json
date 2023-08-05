@@ -1,5 +1,14 @@
 {
   "es": {
+    "nav": {
+      "links": []
+    },
+    "buttons": {
+      "login": "Entrar a Horizon"
+    },
+    "ariaLabels": {
+      "toTop": "Ir al tope"
+    },
     "Sidebar": {
       "Title": "Beyond the World",
       "Subtitle": "en el navegador",

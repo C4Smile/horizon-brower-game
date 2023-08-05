@@ -1,116 +1,348 @@
-import { useForm } from "react-hook-form";
+import { useEffect, useCallback, useMemo, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-// sito-components
-import SitoContainer from "sito-container";
+import { createCookie } from "some-javascript-utils/browser";
 
-// @emotion/css
-import { css } from "@emotion/css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faContactCard,
+  faEnvelope,
+  faLock,
+  faLockOpen,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 
 // contexts
-import { useLanguage } from "../../context/LanguageProvider";
-import { useNotification } from "../../context/NotificationProvider";
+import { useUser } from "../../contexts/UserProvider";
+import { useLanguage } from "../../contexts/LanguageProvider";
+import { useNotification } from "../../contexts/NotificationProvider";
+
+// components
+import Loading from "../../components/Loading/Screen";
+import SimpleInput from "../../components/SimpleInput/SimpleInput";
 
 // services
-import { register as rRegister } from "../../services/post";
+import { signUp } from "../../services/users";
 
-const SignUp = () => {
+// utils
+import { logUser } from "../../utils/auth";
+
+import config from "../../config";
+
+// styles
+import styles from "./signIn.module.css";
+
+function SignUp() {
   const { languageState } = useLanguage();
   const { setNotificationState } = useNotification();
 
-  const showNotification = (ntype, message) =>
-    setNotificationState({ type: "set", ntype, message });
+  const [helperTexts, setHelperTexts] = useState({});
 
-  const { register, handleSubmit } = useForm();
+  const { auth, inputs, errors } = useMemo(() => {
+    return {
+      inputs: languageState.texts.inputs,
+      auth: languageState.texts.auth,
+      errors: languageState.texts.errors,
+    };
+  }, [languageState]);
 
-  const onSubmit = async (d) => {
-    const { user, password, repassword } = d;
-    if (password != repassword) {
-      console.log(languageState.texts.Errors.DifferentPassword);
-      showNotification("error", languageState.texts.Errors.DifferentPassword);
-    } else {
-      try {
-        const response = await rRegister(user, password);
-        const { id, token, expiration } = response.data;
-      } catch (error) {
-        console.log(error);
-        showNotification("error", String(error));
+  const [user, setUser] = useState("");
+
+  const handleUser = useCallback((e) => {
+    setUser(e.target.value);
+  }, []);
+
+  const [name, setName] = useState("");
+
+  const handleName = useCallback((e) => {
+    setName(e.target.value);
+  }, []);
+
+  const [ci, setCI] = useState("");
+
+  const handleCI = useCallback((e) => {
+    if (/^[0-9]*$/.test(e.target.value) && e.target.value.length <= 11)
+      setCI(e.target.value);
+  }, []);
+
+  const [fvCI, setFvCI] = useState("AAA000000");
+
+  const handleFvCI = useCallback((e) => {
+    setFvCI(e.target.value);
+  }, []);
+
+  const [email, setEmail] = useState("");
+
+  const handleEmail = useCallback((e) => {
+    setEmail(e.target.value);
+  }, []);
+
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handlePassword = (e) => setPassword(e.target.value);
+
+  const toggleShowPassword = () =>
+    setShowPassword((showPassword) => !showPassword);
+
+  const [rPassword, setRPassword] = useState("");
+  const [showRPassword, setShowRPassword] = useState(false);
+
+  const handleRPassword = (e) => setRPassword(e.target.value);
+
+  const toggleShowRPassword = () =>
+    setShowRPassword((showRPassword) => !showRPassword);
+
+  const navigate = useNavigate();
+
+  const { userState, setUserState } = useUser();
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (userState.user) navigate("/");
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, [userState]);
+
+  const showNotification = useCallback(
+    (ntype, message) =>
+      setNotificationState({
+        type: "set",
+        ntype,
+        message,
+      }),
+    [setNotificationState]
+  );
+
+  const requiredValidator = useCallback((inputs, keys) => {
+    for (const item of keys) {
+      if (!inputs[item].length) {
+        document.getElementById(item)?.focus();
+        showNotification("error", errors[`${item}Required`]);
+        return true;
       }
     }
-  };
+  }, []);
+
+  const onSubmit = useCallback(
+    async (e) => {
+      setHelperTexts({});
+      e.preventDefault();
+      let noValid = requiredValidator(
+        { user, password, name, ci, fvCI, email },
+        ["user", "password", "name", "ci", "fvCI", "email"]
+      );
+      if (!/^[a-zA-Z]{3}[0-9]{6}$/.test(fvCI)) {
+        document.getElementById("fvCI")?.focus();
+        showNotification("error", errors.fvCIInvalid);
+        return;
+      }
+      if (noValid) return;
+      if (password !== rPassword) {
+        document.getElementById("password")?.focus();
+        showNotification("error", errors.passwordsAreNotEqual);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const response = await signUp(user, name, ci, fvCI, email, password);
+        if (response.message) {
+          showNotification("error", errors.ciUsed);
+        } else {
+          const { expiration, token } = response;
+          createCookie(config.basicKeyCookie, expiration, token);
+          logUser(false, { user: response.user });
+          setUserState({ type: "logged-in", user: { user: response.user } });
+          navigate("/");
+        }
+      } catch (err) {
+        console.error(err);
+        if (String(err) === "AxiosError: Network Error")
+          showNotification("error", errors.notConnected);
+        else showNotification("error", String(err));
+      }
+      setLoading(false);
+    },
+    [
+      user,
+      password,
+      rPassword,
+      ci,
+      fvCI,
+      name,
+      email,
+      errors,
+      requiredValidator,
+      showNotification,
+      navigate,
+      setUserState,
+    ]
+  );
 
   return (
-    <SitoContainer
-      flexDirection="column"
-      sx={{ width: "100%", height: "100%" }}
-    >
-      <SitoContainer
-        sx={{
-          width: "100%",
-          justifyContent: "flex-start",
-          marginTop: "10px",
-        }}
+    <>
+      {loading ? (
+        <Loading className="fixed top-0 left-0 w-full h-screen dark:bg-dark-background2 bg-light-background2 z-30" />
+      ) : null}
+      <form
+        onSubmit={onSubmit}
+        className={`entrance bg-light-background dark:bg-dark-background ${styles.main}`}
       >
-        <SitoContainer
-          sx={{
-            minWidth: "48px",
-            minHeight: "48px",
-            borderRadius: "100%",
-            background: "red",
-            marginRight: "10px",
-            marginLeft: "20px",
+        <h2>{auth.signUp.title}</h2>
+        <p>{auth.signUp.body}</p>
+        <SimpleInput
+          id="user"
+          className="input-control"
+          label={auth.labels.user}
+          inputProps={{
+            className: "input primary !pl-8 w-full",
+            value: user,
+            onChange: handleUser,
+            type: "text",
           }}
-        ></SitoContainer>
-      </SitoContainer>
-      <SitoContainer
-        justifyContent="center"
-        alignItems="center"
-        sx={{ height: "100%" }}
-      >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <SitoContainer
-            flexDirection="column"
-            sx={{
-              width: "512px",
-              height: "320px",
-              marginRight: "10px",
-              marginLeft: "20px",
-              border: "2px solid #000000",
-              padding: "50px",
-            }}
+          leftIcon={
+            <FontAwesomeIcon
+              className="absolute text-white top-[50%] -translate-y-[50%] left-3"
+              icon={faUser}
+            />
+          }
+          helperText={helperTexts.user}
+        />
+        <SimpleInput
+          id="name"
+          className="input-control"
+          label={inputs.name}
+          inputProps={{
+            className: "input primary !pl-8 w-full",
+            value: name,
+            onChange: handleName,
+            type: "text",
+          }}
+          leftIcon={<FontAwesomeIcon className="input-icon" icon={faUser} />}
+          helperText={helperTexts.name}
+        />
+        <SimpleInput
+          id="ci"
+          className="input-control"
+          label={inputs.ci}
+          inputProps={{
+            className: "input primary !pl-8 w-full",
+            value: ci,
+            onChange: handleCI,
+            type: "text",
+          }}
+          leftIcon={
+            <FontAwesomeIcon className="input-icon" icon={faContactCard} />
+          }
+          helperText={helperTexts.ci}
+        />
+        <SimpleInput
+          id="fvCI"
+          className="input-control"
+          label={inputs.fvCI}
+          inputProps={{
+            className: "input primary !pl-8 w-full",
+            value: fvCI,
+            onChange: handleFvCI,
+            type: "text",
+          }}
+          leftIcon={
+            <FontAwesomeIcon className="input-icon" icon={faContactCard} />
+          }
+          helperText={helperTexts.fvCI}
+        />
+        <SimpleInput
+          id="email"
+          className="input-control"
+          label={inputs.email}
+          inputProps={{
+            className: "input primary !pl-8 w-full",
+            value: email,
+            onChange: handleEmail,
+            type: "email",
+          }}
+          leftIcon={
+            <FontAwesomeIcon className="input-icon" icon={faEnvelope} />
+          }
+          helperText={helperTexts.email}
+        />
+        <SimpleInput
+          id="password"
+          className="input-control"
+          label={auth.labels.password}
+          inputProps={{
+            className: "input primary !pl-8 w-full",
+            value: password,
+            onChange: handlePassword,
+            type: !showPassword ? "password" : "string",
+          }}
+          leftIcon={
+            <button tabIndex={-1} type="button" onClick={toggleShowPassword}>
+              <FontAwesomeIcon
+                className="absolute text-white top-[50%] -translate-y-[50%] left-3"
+                icon={showPassword ? faLockOpen : faLock}
+              />
+            </button>
+          }
+          helperText={helperTexts.password}
+        />
+        <SimpleInput
+          id="password"
+          className="input-control"
+          label={auth.labels.rPassword}
+          inputProps={{
+            className: "input primary !pl-8 w-full",
+            value: rPassword,
+            onChange: handleRPassword,
+            type: !showRPassword ? "password" : "string",
+          }}
+          leftIcon={
+            <button tabIndex={-1} type="button" onClick={toggleShowRPassword}>
+              <FontAwesomeIcon
+                className="absolute text-white top-[50%] -translate-y-[50%] left-3"
+                icon={showRPassword ? faLockOpen : faLock}
+              />
+            </button>
+          }
+          helperText={helperTexts.rPassword}
+        />
+        <p>
+          {auth.signUp.already}
+          <Link
+            to="/auth/"
+            className="ml-1 underline dark:text-white text-dark-background2"
           >
-            <h1 className={css({ margin: 0 })}>
-              {languageState.texts.SignUp.Title}
-            </h1>
-            {languageState.texts.SignUp.Inputs.map((item) => (
-              <SitoContainer key={item.id} flexDirection="column">
-                <label className={css({ margin: "25px 0px 5px 0px" })}>
-                  {item.label}
-                </label>
-                <input
-                  required
-                  id={item.id}
-                  type={item.type}
-                  placeholder={item.placeholder}
-                  className={css({ padding: "5px" })}
-                  {...register(item.id)}
-                />
-              </SitoContainer>
-            ))}
-            <SitoContainer
-              justifyContent="flex-end"
-              sx={{ marginTop: "10px", gap: "15px" }}
-            >
-              {languageState.texts.SignUp.Buttons.map((item) => (
-                <button key={item.text} type={item.type}>
-                  {item.text}
-                </button>
-              ))}
-            </SitoContainer>
-          </SitoContainer>
-        </form>
-      </SitoContainer>
-    </SitoContainer>
+            {auth.signUp.link}
+          </Link>
+          .
+        </p>
+        <p>
+          <b>{languageState.texts.auth.signUp.note.bold}</b>
+          {languageState.texts.auth.signUp.note.regular}
+        </p>
+        <p>
+          {languageState.texts.auth.signUp.terms.body}
+          <a
+            className="ml-1 underline"
+            target="_blank"
+            rel="noreferrer"
+            href="/terms-condition"
+          >
+            {languageState.texts.auth.signUp.terms.link}
+          </a>
+        </p>
+        <button
+          type="submit"
+          className="button primary self-end hover:bg-pdark hover:border-pdark cursor-default"
+        >
+          {auth.signUp.submit}
+        </button>
+      </form>
+    </>
   );
-};
+}
 
 export default SignUp;

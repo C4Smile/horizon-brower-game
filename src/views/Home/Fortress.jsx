@@ -8,9 +8,9 @@ import SitoImage from "sito-image";
 import SitoContainer from "sito-container";
 
 // context
-import { useMode } from "../../context/ModeProvider";
-import { useUser } from "../../context/UserProvider";
-import { useLanguage } from "../../context/LanguageProvider";
+import { useMode } from "../../contexts/ModeProvider";
+import { useUser } from "../../contexts/UserProvider";
+import { useLanguage } from "../../contexts/LanguageProvider";
 
 // images
 import background from "../../assets/images/background/plain.jpeg";

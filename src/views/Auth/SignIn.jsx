@@ -1,154 +1,210 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useCallback, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-// sito-components
-import SitoContainer from "sito-container";
+import { createCookie } from "some-javascript-utils/browser";
 
-// @emotion/css
-import { css } from "@emotion/css";
-
-// socket
-import io from "socket.io-client";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock, faLockOpen, faUser } from "@fortawesome/free-solid-svg-icons";
 
 // contexts
-import { useUser } from "../../context/UserProvider";
-import { useLanguage } from "../../context/LanguageProvider";
-import { useNotification } from "../../context/NotificationProvider";
+import { useUser } from "../../contexts/UserProvider";
+import { useLanguage } from "../../contexts/LanguageProvider";
+import { useNotification } from "../../contexts/NotificationProvider";
+
+// components
+import Switch from "../../components/Switch/Switch";
+import Loading from "../../components/Loading/Screen";
+import SimpleInput from "../../components/SimpleInput/SimpleInput";
 
 // services
-import { login } from "../../services/post";
-
-//own components
-import Loading from "../../components/Loading/Section";
+import { login } from "../../services/auth";
 
 // utils
-import { logUser, createCookie, userLogged } from "../../utils/functions";
+import { logUser } from "../../utils/auth";
 
 import config from "../../config";
 
-const SignIn = () => {
-  const navigate = useNavigate();
+// styles
+import styles from "./signIn.module.css";
 
-  const { setUserState } = useUser();
+function SignIn() {
   const { languageState } = useLanguage();
   const { setNotificationState } = useNotification();
 
-  const [loading, setLoading] = useState(false);
+  const { auth, errors } = useMemo(() => {
+    return {
+      auth: languageState.texts.auth,
+      errors: languageState.texts.errors,
+    };
+  }, [languageState]);
+
+  const [user, setUser] = useState("");
+  const [userHelperText, setUserHelperText] = useState("");
+
+  const handleUser = useCallback((e) => {
+    setUser(e.target.value);
+  }, []);
+
   const [remember, setRemember] = useState(false);
 
-  const showNotification = (ntype, message) =>
-    setNotificationState({ type: "set", ntype, message });
+  const handleRemember = useCallback(() => {
+    setRemember(!remember);
+  }, [remember]);
 
-  const { register, handleSubmit } = useForm();
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordHelperText, setPasswordHelperText] = useState("");
 
-  const onSubmit = async (d) => {
-    const { user, password } = d;
-    setLoading(true);
-    try {
-      const response = await login(user, password);
-      const { id, token, expiration } = response.data;
-      logUser(remember, { id });
-      const socket = io(config.socketUrl);
-      socket.on("connect", () => socket.emit("user_connecting", id));
-      setUserState({ type: "set", user: id, socket, resources: [] });
-      createCookie(config.basicKey, expiration, token);
-      setTimeout(() => {
-        if (userLogged()) navigate("/");
-      }, 100);
-    } catch (error) {
-      const data = await error.response.data;
-      showNotification("error", languageState.texts.Errors[data.error]);
-    }
-    setLoading(false);
-  };
+  const handlePassword = useCallback((e) => {
+    setPassword(e.target.value);
+  }, []);
+
+  const toggleShowPassword = useCallback(() => {
+    setShowPassword(!showPassword);
+  }, [showPassword]);
+
+  const navigate = useNavigate();
+
+  const { userState, setUserState } = useUser();
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (userState.user) navigate("/");
+    setTimeout(() => {
+      setLoading(false);
+    }, 500);
+  }, [userState]);
+
+  const showNotification = useCallback(
+    (ntype, message) =>
+      setNotificationState({
+        type: "set",
+        ntype,
+        message,
+      }),
+    [setNotificationState]
+  );
+
+  const onSubmit = useCallback(
+    async (e) => {
+      setUserHelperText("");
+      setPasswordHelperText("");
+      e.preventDefault();
+      if (!user.length) {
+        document.getElementById("user")?.focus();
+        setUserHelperText(errors.userRequired);
+        return;
+      }
+      if (!password.length) {
+        document.getElementById("password")?.focus();
+        setPasswordHelperText(errors.passwordRequired);
+        return;
+      }
+      try {
+        setLoading(true);
+        const response = await login(user, password, remember);
+        const { data } = response;
+        const { expiration, token } = data;
+        createCookie(config.basicKeyCookie, expiration, token);
+        logUser(remember, { user: data.user });
+        setUserState({ type: "logged-in", user: { user: data.user } });
+        navigate("/");
+      } catch (err) {
+        console.error(err);
+        const { response } = err;
+        if (String(err) === "AxiosError: Network Error")
+          showNotification("error", errors.notConnected);
+        else if (response) {
+          const { status } = response;
+          if (status === 403)
+            showNotification("error", errors.accountAlreadyOpened);
+        } else showNotification("error", String(err));
+      }
+      setLoading(false);
+    },
+    [user, password, errors, showNotification, navigate, remember, setUserState]
+  );
 
   return (
-    <SitoContainer
-      flexDirection="column"
-      sx={{ width: "100%", height: "100%" }}
-    >
-      <SitoContainer
-        sx={{
-          width: "100%",
-          justifyContent: "flex-start",
-          marginTop: "10px",
-        }}
+    <>
+      {loading ? (
+        <Loading className="fixed top-0 left-0 w-full h-screen dark:bg-dark-background2 bg-light-background2 z-30" />
+      ) : null}
+      <form
+        onSubmit={onSubmit}
+        className={`entrance bg-light-background dark:bg-dark-background ${styles.main}`}
       >
-        <SitoContainer
-          sx={{
-            minWidth: "48px",
-            minHeight: "48px",
-            borderRadius: "100%",
-            background: "red",
-            marginRight: "10px",
-            marginLeft: "20px",
+        <h2>{auth.signIn.title}</h2>
+        <p>{auth.signIn.body}</p>
+        <SimpleInput
+          id="user"
+          className="input-control"
+          label={auth.labels.user}
+          inputProps={{
+            className: "input primary !pl-8 w-full",
+            value: user,
+            onChange: handleUser,
+            type: "string",
           }}
-        ></SitoContainer>
-      </SitoContainer>
-      <SitoContainer
-        alignItems="center"
-        justifyContent="center"
-        sx={{ height: "100%" }}
-      >
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <SitoContainer
-            flexDirection="column"
-            sx={{
-              width: "512px",
-              height: "256px",
-              marginRight: "10px",
-              marginLeft: "20px",
-              border: "2px solid #000000",
-              padding: "50px",
-              position: "relative",
-            }}
+          leftIcon={
+            <FontAwesomeIcon
+              className="absolute text-white top-[50%] -translate-y-[50%] left-3"
+              icon={faUser}
+            />
+          }
+          helperText={userHelperText}
+        />
+        <SimpleInput
+          id="password"
+          className="input-control"
+          label={auth.labels.password}
+          inputProps={{
+            className: "input primary !pl-8 w-full",
+            value: password,
+            onChange: handlePassword,
+            type: !showPassword ? "password" : "string",
+          }}
+          leftIcon={
+            <button tabIndex={-1} type="button" onClick={toggleShowPassword}>
+              <FontAwesomeIcon
+                className="absolute text-white top-[50%] -translate-y-[50%] left-3"
+                icon={showPassword ? faLockOpen : faLock}
+              />
+            </button>
+          }
+          helperText={passwordHelperText}
+        />
+        <Switch
+          onChange={handleRemember}
+          id="remember"
+          value={remember}
+          label={auth.labels.remember}
+        />
+        <p>
+          {auth.recovery.body}
+          <Link
+            to="/auth/recovery"
+            className="ml-1 underline dark:text-white text-dark-background2"
           >
-            <Loading visible={loading} />
-            <h1 className={css({ margin: 0 })}>
-              {languageState.texts.SignIn.Title}
-            </h1>
-            {languageState.texts.SignIn.Inputs.map((item) => (
-              <SitoContainer key={item.id} flexDirection="column">
-                <label className={css({ margin: "25px 0px 5px 0px" })}>
-                  {item.label}
-                </label>
-                <input
-                  required
-                  id={item.id}
-                  type={item.type}
-                  placeholder={item.placeholder}
-                  className={css({ padding: "5px" })}
-                  {...register(item.id)}
-                />
-              </SitoContainer>
-            ))}
-            <SitoContainer justifyContent="flex-end" sx={{ marginTop: "10px" }}>
-              <Link to={"/auth/recovery"} target="_blank" rel="noreferrer">
-                {languageState.texts.SignIn.LinkRecover}
-              </Link>
-            </SitoContainer>
-            <SitoContainer
-              justifyContent="flex-end"
-              sx={{ marginTop: "10px", gap: "15px" }}
-            >
-              {languageState.texts.SignIn.Buttons.map((item) => (
-                <button
-                  key={item.text}
-                  type={item.type}
-                  onClick={() =>
-                    item.type === "button" ? navigate("/auth/sign-up") : {}
-                  }
-                >
-                  {item.text}
-                </button>
-              ))}
-            </SitoContainer>
-          </SitoContainer>
-        </form>
-      </SitoContainer>
-    </SitoContainer>
+            {auth.recovery.link}
+          </Link>
+          .
+        </p>
+        <div className="w-full flex gap-5 justify-end items-center">
+          <Link to="/auth/sign-up" className="button secondary" type="button">
+            {auth.signUp.submit}
+          </Link>
+          <button
+            type="submit"
+            className="button primary self-end hover:bg-pdark hover:border-pdark cursor-default"
+          >
+            {auth.signIn.submit}
+          </button>
+        </div>
+      </form>
+    </>
   );
-};
+}
 
 export default SignIn;

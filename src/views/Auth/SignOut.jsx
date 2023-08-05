@@ -1,43 +1,39 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+// utils
+import { getUserName, logoutUser } from "../../utils/auth";
+
+// contexts
+import { useUser } from "../../contexts/UserProvider";
+
+// services
+import { signOutUser } from "../../services/auth";
+
 // components
 import Loading from "../../components/Loading/Screen";
 
-// services
-import { logout } from "../../services/post";
-
-// contexts
-import { useUser } from "../../context/UserProvider";
-
-// utils
-import { getUserName, logoutUser } from "../../utils/functions";
-
-import config from "../../config";
-
-const SignOut = () => {
+function SignOut() {
   const navigate = useNavigate();
 
-  const { userState, setUserState } = useUser();
+  const { setUserState } = useUser();
 
   const signOut = async () => {
     try {
-      await logout(getUserName());
-      sessionStorage.removeItem(config.userNick);
-      sessionStorage.removeItem(config.userNation);
-      setUserState({ type: "logOut" });
+      await signOutUser(getUserName());
+      setUserState({ type: "logged-out" });
+      logoutUser();
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
-    logoutUser();
-    navigate("/auth");
+    navigate("/");
   };
 
   useEffect(() => {
     signOut();
   }, []);
 
-  return <Loading visible />;
-};
+  return <Loading className="w-full h-screen top-0 left-0 absolute" />;
+}
 
 export default SignOut;

@@ -1,21 +1,27 @@
 const {
-  REACT_APP_API_URL,
-  REACT_APP_SOCKET_URL,
-  REACT_APP_USER_COOKIE,
-  REACT_APP_VALIDATION_COOKIE,
-  REACT_APP_RECOVERING_COOKIE,
-  REACT_APP_USER_NATION,
-  REACT_APP_USER_NICK,
-} = process.env;
+  VITE_API_URL,
+  // cookies
+  VITE_LANGUAGE,
+  VITE_BASIC_KEY,
+  VITE_USER_COOKIE,
+  VITE_USER_PHOTO_COOKIE,
+  VITE_USER_APPS_KEY,
+  VITE_ACCEPT_COOKIE,
+  VITE_DECLINE_COOKIE,
+  VITE_API_PHOTO,
+} = import.meta.env;
 
 const config = {
-  apiUrl: REACT_APP_API_URL,
-  socketUrl: REACT_APP_SOCKET_URL,
-  userNick: REACT_APP_USER_NICK,
-  userCookie: REACT_APP_USER_COOKIE,
-  userNation: REACT_APP_USER_NATION,
-  validationCookie: REACT_APP_VALIDATION_COOKIE,
-  recoveringCookie: REACT_APP_RECOVERING_COOKIE,
+  // cookie
+  language: VITE_LANGUAGE,
+  apiUrl: VITE_API_URL,
+  basicKeyCookie: VITE_BASIC_KEY,
+  userCookie: VITE_USER_COOKIE,
+  userPhotoCookie: VITE_USER_PHOTO_COOKIE,
+  userAppsCookie: VITE_USER_APPS_KEY,
+  acceptCookie: VITE_ACCEPT_COOKIE,
+  declineCookie: VITE_DECLINE_COOKIE,
+  apiPhoto: VITE_API_PHOTO,
 };
 
 export default config;

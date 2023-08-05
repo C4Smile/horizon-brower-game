@@ -5,9 +5,6 @@ import PropTypes from "prop-types";
 // @emotion/css
 import { css } from "@emotion/css";
 
-// react-icons
-import { FiX } from "react-icons/fi";
-
 // sito container
 import SitoContainer from "sito-container";
 
@@ -62,7 +59,7 @@ const Sidebar = (props) => {
             },
           })}
         >
-          <FiX />
+          X
         </button>
         <h1>{languageState.texts.Sidebar.Title}</h1>
         <hr />

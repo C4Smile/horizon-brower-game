@@ -9,6 +9,9 @@ const NotificationContext = React.createContext();
 
 const notificationReducer = (notificationState, action) => {
   switch (action.type) {
+    case "hide": {
+      return { ...notificationState, visible: false };
+    }
     case "set":
       return {
         visible: true,
