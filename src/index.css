@@ -159,3 +159,7 @@ td {
 .cta {
   @apply dark:bg-dark-background2 transition hover:bg-plight dark:hover:bg-plight dark:text-white bg-white rounded-3xl px-5 py-3;
 }
+
+.fixed-loading {
+  @apply fixed top-0 left-0 w-full h-screen flex items-center justify-center dark:bg-dark-background2 bg-light-background2 z-30;
+}

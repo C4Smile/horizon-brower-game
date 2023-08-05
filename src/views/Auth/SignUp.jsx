@@ -158,9 +158,7 @@ function SignUp() {
 
   return (
     <>
-      {loading ? (
-        <Loading className="fixed top-0 left-0 w-full h-screen dark:bg-dark-background2 bg-light-background2 z-30" />
-      ) : null}
+      {loading ? <Loading className="fixed-loading" /> : null}
       <form
         onSubmit={onSubmit}
         className={`entrance bg-light-background dark:bg-dark-background ${styles.main}`}

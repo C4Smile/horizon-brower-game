@@ -130,7 +130,7 @@ function SignIn() {
   return (
     <>
       {loading ? (
-        <Loading className="fixed top-0 left-0 w-full h-screen flex items-center justify-center dark:bg-dark-background2 bg-light-background2 z-30" />
+        <Loading className="fixed-loading" />
       ) : null}
       <form
         onSubmit={onSubmit}

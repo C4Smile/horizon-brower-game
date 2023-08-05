@@ -33,7 +33,7 @@ function SignOut() {
     signOut();
   }, []);
 
-  return <Loading className="w-full h-screen top-0 left-0 absolute" />;
+  return <Loading className="fixed-loading" />;
 }
 
 export default SignOut;
