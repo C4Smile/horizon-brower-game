@@ -5,7 +5,6 @@ import { createCookie } from "some-javascript-utils/browser";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faContactCard,
   faEnvelope,
   faLock,
   faLockOpen,
@@ -50,25 +49,6 @@ function SignUp() {
 
   const handleUser = useCallback((e) => {
     setUser(e.target.value);
-  }, []);
-
-  const [name, setName] = useState("");
-
-  const handleName = useCallback((e) => {
-    setName(e.target.value);
-  }, []);
-
-  const [ci, setCI] = useState("");
-
-  const handleCI = useCallback((e) => {
-    if (/^[0-9]*$/.test(e.target.value) && e.target.value.length <= 11)
-      setCI(e.target.value);
-  }, []);
-
-  const [fvCI, setFvCI] = useState("AAA000000");
-
-  const handleFvCI = useCallback((e) => {
-    setFvCI(e.target.value);
   }, []);
 
   const [email, setEmail] = useState("");
@@ -130,15 +110,12 @@ function SignUp() {
     async (e) => {
       setHelperTexts({});
       e.preventDefault();
-      let noValid = requiredValidator(
-        { user, password, name, ci, fvCI, email },
-        ["user", "password", "name", "ci", "fvCI", "email"]
-      );
-      if (!/^[a-zA-Z]{3}[0-9]{6}$/.test(fvCI)) {
-        document.getElementById("fvCI")?.focus();
-        showNotification("error", errors.fvCIInvalid);
-        return;
-      }
+      let noValid = requiredValidator({ user, password, email }, [
+        "user",
+        "password",
+        "email",
+      ]);
+
       if (noValid) return;
       if (password !== rPassword) {
         document.getElementById("password")?.focus();
@@ -148,7 +125,7 @@ function SignUp() {
 
       try {
         setLoading(true);
-        const response = await signUp(user, name, ci, fvCI, email, password);
+        const response = await signUp(user, email, password);
         if (response.message) {
           showNotification("error", errors.ciUsed);
         } else {
@@ -170,9 +147,6 @@ function SignUp() {
       user,
       password,
       rPassword,
-      ci,
-      fvCI,
-      name,
       email,
       errors,
       requiredValidator,
@@ -210,49 +184,7 @@ function SignUp() {
           }
           helperText={helperTexts.user}
         />
-        <SimpleInput
-          id="name"
-          className="input-control"
-          label={inputs.name}
-          inputProps={{
-            className: "input primary !pl-8 w-full",
-            value: name,
-            onChange: handleName,
-            type: "text",
-          }}
-          leftIcon={<FontAwesomeIcon className="input-icon" icon={faUser} />}
-          helperText={helperTexts.name}
-        />
-        <SimpleInput
-          id="ci"
-          className="input-control"
-          label={inputs.ci}
-          inputProps={{
-            className: "input primary !pl-8 w-full",
-            value: ci,
-            onChange: handleCI,
-            type: "text",
-          }}
-          leftIcon={
-            <FontAwesomeIcon className="input-icon" icon={faContactCard} />
-          }
-          helperText={helperTexts.ci}
-        />
-        <SimpleInput
-          id="fvCI"
-          className="input-control"
-          label={inputs.fvCI}
-          inputProps={{
-            className: "input primary !pl-8 w-full",
-            value: fvCI,
-            onChange: handleFvCI,
-            type: "text",
-          }}
-          leftIcon={
-            <FontAwesomeIcon className="input-icon" icon={faContactCard} />
-          }
-          helperText={helperTexts.fvCI}
-        />
+
         <SimpleInput
           id="email"
           className="input-control"
@@ -289,7 +221,7 @@ function SignUp() {
           helperText={helperTexts.password}
         />
         <SimpleInput
-          id="password"
+          id="rPassword"
           className="input-control"
           label={auth.labels.rPassword}
           inputProps={{
@@ -318,10 +250,7 @@ function SignUp() {
           </Link>
           .
         </p>
-        <p>
-          <b>{languageState.texts.auth.signUp.note.bold}</b>
-          {languageState.texts.auth.signUp.note.regular}
-        </p>
+
         <p>
           {languageState.texts.auth.signUp.terms.body}
           <a

@@ -136,6 +136,19 @@ td {
   }
 }
 
+.loading {
+  animation: loading 5s linear infinite;
+}
+
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 @media (max-width: 500px) {
   .navbar,
   .padding-container {

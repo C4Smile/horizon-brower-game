@@ -113,6 +113,7 @@ function SignIn() {
       } catch (err) {
         console.error(err);
         const { response } = err;
+        console.log(String(err));
         if (String(err) === "AxiosError: Network Error")
           showNotification("error", errors.notConnected);
         else if (response) {
@@ -129,7 +130,7 @@ function SignIn() {
   return (
     <>
       {loading ? (
-        <Loading className="fixed top-0 left-0 w-full h-screen dark:bg-dark-background2 bg-light-background2 z-30" />
+        <Loading className="fixed top-0 left-0 w-full h-screen flex items-center justify-center dark:bg-dark-background2 bg-light-background2 z-30" />
       ) : null}
       <form
         onSubmit={onSubmit}

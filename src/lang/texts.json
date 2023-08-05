@@ -49,10 +49,7 @@
         "title": "Registrarse",
         "submit": "Crear cuenta",
         "already": "¿Ya tienes cuenta?",
-        "note": {
-          "bold": "*IMPORTANTE",
-          "regular": ": Si tiene menos de 16 años, puede registrarse y visualizar la página en su totalidad, pero solo como observador. Según la legislación vigente (introducir ley) necesita tener más de 16 años para emitir su voto."
-        },
+
         "terms": {
           "body": "Al registrarte, acepta todos los",
           "link": "Términos y Condiciones de uso de Horizon"
