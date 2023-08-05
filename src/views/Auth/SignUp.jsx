@@ -127,7 +127,7 @@ function SignUp() {
         setLoading(true);
         const response = await signUp(user, email, password);
         if (response.message) {
-          showNotification("error", errors.ciUsed);
+          showNotification("error", errors.emailUsed);
         } else {
           const { expiration, token } = response;
           createCookie(config.basicKeyCookie, expiration, token);
