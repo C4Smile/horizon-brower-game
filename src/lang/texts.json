@@ -1,126 +1,69 @@
 {
   "es": {
     "nav": {
-      "links": []
+      "links": [
+        { "to": "/", "label": "Inicio" },
+        { "to": "/help", "label": "Ayuda" },
+        { "to": "/auth/sign-up", "label": "Registrarse", "logged": false }
+      ]
     },
     "buttons": {
-      "login": "Entrar a Horizon"
+      "login": "Entrar a Horizon",
+      "save": "Guardar",
+      "send": "Enviar",
+      "logout": "Cerrar sesión"
     },
     "ariaLabels": {
       "toTop": "Ir al tope"
     },
-    "Sidebar": {
-      "Title": "Beyond the World",
-      "Subtitle": "en el navegador",
-      "Links": [
-        {
-          "Label": "Ayuntamiento",
-          "Link": "/"
-        },
-        {
-          "Label": "Edificios",
-          "Link": "/buildings"
-        },
-        {
-          "Label": "Investigaciones",
-          "Link": "/researches"
-        },
-        {
-          "Label": "Arsenal",
-          "Link": "/arsenal"
-        },
-        {
-          "Label": "Astillero",
-          "Link": "/dock"
-        },
-        {
-          "Label": "Flota",
-          "Link": "/fleet"
-        },
-        {
-          "Label": "Mapa",
-          "Link": "/map"
-        },
-        {
-          "Label": "Rutas Comerciales",
-          "Link": "/routes"
-        },
-        {
-          "Label": "Defensas",
-          "Link": "/defenses"
-        }
-      ],
-      "Player": [
-        {
-          "Label": "Perfil",
-          "Link": "/profile"
-        },
-        {
-          "Label": "Ajustes",
-          "Link": "/settings"
-        },
-        {
-          "Label": "Cerrar sesión",
-          "Link": "/auth/sign-out"
-        }
-      ]
+    "errors": {
+      "accountAlreadyOpened": "Ya hay una sesión activa con esta cuenta ",
+      "notConnected": "No hay conexión con el servidor",
+      "userRequired": "Debes introducir tu usuario",
+      "nameRequired": "Debes introducir tu nombre y apellidos",
+      "emailRequired": "Debes introducir tu correo electrónico",
+      "emailInvalid": "Debes introducir un correo válido",
+      "passwordRequired": "Debes introducir tu contraseña",
+      "passwordsAreNotEqual": "Las contraseñas no coinciden"
     },
-    "SelectNation": {
-      "Title": "Selecciona tu nación"
+    "inputs": {
+      "name": "Nombre y Apellidos",
+      "email": "Correo Electrónico"
     },
-    "SignIn": {
-      "Title": "Iniciar sesión",
-      "Inputs": [
-        {
-          "id": "user",
-          "label": "Nombre de usuario o email",
-          "type": "text",
-          "placeholder": "ej: perez88"
+    "auth": {
+      "recovery": {
+        "title": "Recuperar contraseña",
+        "body": "¿Olvidaste la contraseña?",
+        "link": "recuperar contraseña"
+      },
+
+      "labels": {
+        "user": "Usuario",
+        "email": "Introduce tu email para enviarte la confirmación",
+        "password": "Contraseña",
+        "remember": "Mantener sesión abierta",
+        "rPassword": "Repetir contraseña"
+      },
+
+      "signUp": {
+        "title": "Registrarse",
+        "submit": "Crear cuenta",
+        "already": "¿Ya tienes cuenta?",
+        "note": {
+          "bold": "*IMPORTANTE",
+          "regular": ": Si tiene menos de 16 años, puede registrarse y visualizar la página en su totalidad, pero solo como observador. Según la legislación vigente (introducir ley) necesita tener más de 16 años para emitir su voto."
         },
-        {
-          "id": "password",
-          "label": "Contraseña",
-          "type": "password",
-          "placeholder": "ej: ********"
-        }
-      ],
-      "Buttons": [
-        { "text": "Acceder", "type": "submit" },
-        { "text": "Registrarse", "type": "button" }
-      ],
-      "LinkRecover": "¿Has olvidado tu contraseña?"
-    },
-    "SignUp": {
-      "Title": "Registrarse",
-      "Inputs": [
-        {
-          "id": "user",
-          "label": "Nombre de usuario o email",
-          "type": "email",
-          "placeholder": "ej: perez88"
+        "terms": {
+          "body": "Al registrarte, acepta todos los",
+          "link": "Términos y Condiciones de uso de Horizon"
         },
-        {
-          "id": "password",
-          "label": "Contraseña",
-          "type": "password",
-          "placeholder": "ej: ********"
-        },
-        {
-          "id": "repassword",
-          "label": "Rep. Contraseña",
-          "type": "password",
-          "placeholder": "ej: ********"
-        }
-      ],
-      "Buttons": [{ "text": "Registrarse", "type": "submit" }]
-    },
-    "Errors": {
-      "DifferentPassword": "Las contraseñas no coinciden",
-      "WrongSize": "La contraseña debe de tener entre 8 y 25 caracteres",
-      "WrongVariability": "La contraseña debe al menos una mayúscula, una minúscula y un número",
-      "EqualUser": "La contraseña no debe contener el nombre del usuario",
-      "WrongPassword": "Usuario o contraseña incorrecta",
-      "SomeWrong": "Ha ocurrido un error"
+
+        "link": "Ingresar"
+      },
+      "signIn": {
+        "submit": "Entrar",
+        "title": "Ingresar"
+      }
     }
   }
 }

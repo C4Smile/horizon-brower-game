@@ -58,7 +58,7 @@ function Navbar() {
     <header className="bg-primary w-full">
       <div className="navbar">
         <Link to="/" className="flex flex-row">
-          <h2 className="!text-dark-background2">Horizon</h2>
+          <h2 className="text-light-background">Horizon</h2>
         </Link>
         <div className="flex items-center gap-5">
           <nav>

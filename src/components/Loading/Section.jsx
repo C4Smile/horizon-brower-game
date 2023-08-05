@@ -21,7 +21,6 @@ const Loading = (props) => {
         src={compass}
         alt="compass"
         className={`loading ${css({
-          color: modeState.palette.font.h1.color,
           width: "65px",
           filter: modeState.mode === "light" ? "" : "invert(1)",
         })}`}

@@ -192,7 +192,6 @@ function SignUp() {
         className={`entrance bg-light-background dark:bg-dark-background ${styles.main}`}
       >
         <h2>{auth.signUp.title}</h2>
-        <p>{auth.signUp.body}</p>
         <SimpleInput
           id="user"
           className="input-control"
