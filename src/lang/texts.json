@@ -20,9 +20,11 @@
       "accountAlreadyOpened": "Ya hay una sesión activa con esta cuenta ",
       "notConnected": "No hay conexión con el servidor",
       "userRequired": "Debes introducir tu usuario",
+      "userUsed": "Ya existe una cuenta con ese usuario",
       "nameRequired": "Debes introducir tu nombre y apellidos",
       "emailRequired": "Debes introducir tu correo electrónico",
       "emailInvalid": "Debes introducir un correo válido",
+      "emailUsed": "Ya existe un usuario con ese correo",
       "passwordRequired": "Debes introducir tu contraseña",
       "passwordsAreNotEqual": "Las contraseñas no coinciden"
     },

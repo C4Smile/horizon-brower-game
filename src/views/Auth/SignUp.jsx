@@ -96,15 +96,18 @@ function SignUp() {
     [setNotificationState]
   );
 
-  const requiredValidator = useCallback((inputs, keys) => {
-    for (const item of keys) {
-      if (!inputs[item].length) {
-        document.getElementById(item)?.focus();
-        showNotification("error", errors[`${item}Required`]);
-        return true;
+  const requiredValidator = useCallback(
+    (inputs, keys) => {
+      for (const item of keys) {
+        if (!inputs[item].length) {
+          document.getElementById(item)?.focus();
+          showNotification("error", errors[`${item}Required`]);
+          return true;
+        }
       }
-    }
-  }, []);
+    },
+    [errors, showNotification]
+  );
 
   const onSubmit = useCallback(
     async (e) => {
@@ -127,7 +130,13 @@ function SignUp() {
         setLoading(true);
         const response = await signUp(user, email, password);
         if (response.message) {
-          showNotification("error", errors.emailUsed);
+          if (response.message === "email") {
+            document.getElementById("email")?.focus();
+            showNotification("error", errors.emailUsed);
+          } else if (response.message === "user") {
+            document.getElementById("user")?.focus();
+            showNotification("error", errors.userUsed);
+          }
         } else {
           const { expiration, token } = response;
           createCookie(config.basicKeyCookie, expiration, token);
