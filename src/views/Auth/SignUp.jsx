@@ -19,10 +19,16 @@ import { useNotification } from "../../contexts/NotificationProvider";
 // components
 import Loading from "../../components/Loading/Screen";
 import PrintAfter from "../../components/PrintAfter/PrintAfter";
+import PhotoUpload from "../../components/PhotoUpload/PhotoUpload";
 import SimpleInput from "../../components/SimpleInput/SimpleInput";
 
 // services
-import { signUp } from "../../services/users";
+import {
+  signUp,
+  saveNation as saveRemoteNation,
+  saveNick as saveRemoteNick,
+} from "../../services/users";
+import { nations } from "../../services/nation";
 
 // utils
 import { logUser } from "../../utils/auth";
@@ -31,13 +37,12 @@ import config from "../../config";
 
 // styles
 import styles from "./signIn.module.css";
-import { nations } from "../../services/nation";
 
 function SignUp() {
   const { languageState } = useLanguage();
   const { setNotificationState } = useNotification();
 
-  const [doing, setDoing] = useState(1);
+  const [doing, setDoing] = useState(0);
 
   const [helperTexts, setHelperTexts] = useState({});
 
@@ -103,7 +108,7 @@ function SignUp() {
   const requiredValidator = useCallback(
     (inputs, keys) => {
       for (const item of keys) {
-        if (!inputs[item].length) {
+        if (!inputs || !inputs[item].length) {
           document.getElementById(item)?.focus();
           showNotification("error", errors[`${item}Required`]);
           return true;
@@ -143,11 +148,9 @@ function SignUp() {
           }
         } else {
           const { expiration, token } = response;
-          createCookie(config.basicKeyCookie, expiration, token);
+          createCookie(config.basicKey, expiration, token);
           logUser(false, { user: response.user });
           setDoing(1);
-          // setUserState({ type: "logged-in", user: { user: response.user } });
-          //  navigate("/");
         }
       } catch (err) {
         console.error(err);
@@ -172,6 +175,7 @@ function SignUp() {
   const [nationList, setNationList] = useState([]);
 
   const fetchNations = async () => {
+    setLoading(true);
     try {
       const response = await nations();
       const { rows } = response;
@@ -182,14 +186,99 @@ function SignUp() {
         showNotification("error", errors.notConnected);
       else showNotification("error", String(err));
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     if (doing === 1) fetchNations();
   }, [doing]);
 
+  const saveNation = useCallback(async () => {
+    setLoading(true);
+    try {
+      await saveRemoteNation(nation);
+      logUser(false, { nation });
+      setDoing(2);
+    } catch (err) {
+      console.error(err);
+      if (String(err) === "AxiosError: Network Error")
+        showNotification("error", errors.notConnected);
+      else showNotification("error", String(err));
+    }
+    setLoading(false);
+  }, [nation, errors, showNotification]);
+
+  useEffect(() => {
+    if (nation.length) saveNation();
+  }, [nation]);
+
   const [nick, setNick] = useState("");
+  const [photo, setPhoto] = useState("");
+  const onChangePhoto = useCallback(
+    (id, elem) => {
+      if (elem.target.files[0].size > 15288000) {
+        showNotification("error", languageState.texts.errors.fileToBig);
+
+        elem.target.value = "";
+      } else {
+        if (!elem.target.files || !elem.target.files[0]) return;
+
+        const FR = new FileReader();
+
+        FR.addEventListener("load", function (evt) {
+          setPhoto(evt.target?.result);
+        });
+
+        FR.readAsDataURL(elem.target.files[0]);
+      }
+    },
+    [languageState, showNotification]
+  );
+
   const handleNick = (e) => setNick(e.target.value);
+
+  const saveNick = useCallback(
+    async (e) => {
+      setLoading(true);
+
+      try {
+        setHelperTexts({});
+        e.preventDefault();
+        let noValid = requiredValidator({ nick }, ["nick"]);
+        if (noValid) return;
+        const response = await saveRemoteNick(nick);
+        if (response.message === "ok") {
+          setUserState({
+            type: "logged-in",
+            user: { user, nick, photo, nation },
+          });
+          navigate("/");
+        } else {
+          if (response.message === "nick") {
+            document.getElementById("nick")?.focus();
+            showNotification("error", errors.emailUsed);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+        if (String(err) === "AxiosError: Network Error")
+          showNotification("error", errors.notConnected);
+        else showNotification("error", String(err));
+      }
+      setLoading(false);
+    },
+    [
+      user,
+      nick,
+      photo,
+      nation,
+      requiredValidator,
+      showNotification,
+      setUserState,
+      errors,
+      navigate,
+    ]
+  );
 
   return (
     <>
@@ -298,6 +387,8 @@ function SignUp() {
           </p>
           <button
             type="submit"
+            name="sign-up"
+            aria-label={auth.signUp.submit}
             className="button primary self-end hover:bg-pdark hover:border-pdark cursor-default"
           >
             {auth.signUp.submit}
@@ -305,23 +396,29 @@ function SignUp() {
         </form>
       ) : null}
       {doing === 1 ? (
-        <div className="appear">
+        <div className={`appear ${styles.nation}`}>
           <h2 className="text-center">{auth.signUp.nation.title}</h2>
-          <div className="flex items-start justify-center gap-5 mt-5">
+          <div className="flex items-start justify-center gap-5 mt-5 flex-wrap">
             {nationList.map((nation, i) => (
               <PrintAfter
                 key={nation.id}
                 delay={(i + 1) * 300}
                 animation="appear"
               >
-                <button className="cursor-default group w-[300px] h-[400px] flex flex-col gap-4 items-center justify-center rounded-md relative">
+                <button
+                  name="select-nation"
+                  onClick={() => setNation(nation.id)}
+                  className={`group ${styles.nationCard}`}
+                  aria-label={`${languageState.texts.ariaLabels.selectNation} ${nation.name}`}
+                >
                   <img
                     src={`${config.apiPhoto}${nation.photo}`}
                     alt={nation.name}
-                    className="w-full h-full absolute object-cover top-0 left-0 "
                   />
 
-                  <div className="flex items-center justify-center flex-col w-full h-full top-0 left-0 gap-3 group-hover:opacity-100 group-hover:translate-y-0 transition opacity-0 translate-y-2 bg-pdark-hover-full">
+                  <div
+                    className={`group-hover:opacity-100 group-hover:translate-y-0 ${styles.nationCardContent}`}
+                  >
                     <h3>{nation.name}</h3>
                     <p>{nation.description}</p>
                   </div>
@@ -332,9 +429,39 @@ function SignUp() {
         </div>
       ) : null}
       {doing === 2 ? (
-        <div>
+        <form
+          onSubmit={saveNick}
+          className="flex flex-col items-center justify-start"
+        >
           <h2>{auth.signUp.nick.title}</h2>
-        </div>
+          <PhotoUpload
+            id="photo"
+            label={languageState.texts.auth.labels.photo}
+            className="w-full rounded-full object-cover"
+            imgClassName="w-[150px] h-[150px] my-5 m-auto rounded-full"
+            value={photo}
+            onChange={onChangePhoto}
+          />
+          <SimpleInput
+            id="nick"
+            className="input-control"
+            label={languageState.texts.auth.labels.nick}
+            inputProps={{
+              className: "input primary w-full",
+              value: nick,
+              onChange: handleNick,
+              type: "text",
+            }}
+          />
+          <button
+            type="submit"
+            name="save-personalization"
+            aria-label={`${languageState.texts.buttons.save} ${auth.signUp.nick.title}`}
+            className="button primary self-end hover:bg-pdark hover:border-pdark cursor-default"
+          >
+            {languageState.texts.buttons.save}
+          </button>
+        </form>
       ) : null}
     </>
   );

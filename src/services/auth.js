@@ -21,7 +21,7 @@ export const validateBasicKey = async (type) => {
     {
       headers: {
         ...getAuth,
-        Authorization: `Bearer ${getCookie(config.basicKeyCookie)}`,
+        Authorization: `Bearer ${getCookie(config.basicKey)}`,
       },
     }
   );
@@ -61,7 +61,7 @@ export const signOutUser = async (user) => {
     {
       headers: {
         ...getAuth,
-        Authorization: `Bearer ${getCookie(config.basicKeyCookie)}`,
+        Authorization: `Bearer ${getCookie(config.basicKey)}`,
       },
     }
   );

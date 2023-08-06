@@ -106,7 +106,7 @@ function SignIn() {
         const response = await login(user, password, remember);
         const { data } = response;
         const { expiration, token } = data;
-        createCookie(config.basicKeyCookie, expiration, token);
+        createCookie(config.basicKey, expiration, token);
         logUser(remember, { user: data.user, photo: data.photo, });
         setUserState({ type: "logged-in", user: { user: data.user } });
         navigate("/");

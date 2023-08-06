@@ -1,7 +1,13 @@
 import axios from "axios";
-import { getAuth } from "../auth/auth";
-import config from "../config";
+
+// utils
 import { getUserLanguage } from "some-javascript-utils/browser";
+
+// auth
+import { getAuth } from "../auth/auth";
+
+// config
+import config from "../config";
 
 /**
  *

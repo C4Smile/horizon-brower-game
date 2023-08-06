@@ -14,7 +14,8 @@
       "logout": "Cerrar sesión"
     },
     "ariaLabels": {
-      "toTop": "Ir al tope"
+      "toTop": "Ir al tope",
+      "selectNation": "Seleccionar"
     },
     "errors": {
       "accountAlreadyOpened": "Ya hay una sesión activa con esta cuenta ",
@@ -25,6 +26,8 @@
       "emailRequired": "Debes introducir tu correo electrónico",
       "emailInvalid": "Debes introducir un correo válido",
       "emailUsed": "Ya existe un usuario con ese correo",
+      "nickUser": "Ya existe un usuario con ese alias",
+      "nickRequired": "Debes introducir un alias",
       "passwordRequired": "Debes introducir tu contraseña",
       "passwordsAreNotEqual": "Las contraseñas no coinciden"
     },
@@ -41,6 +44,8 @@
 
       "labels": {
         "user": "Usuario",
+        "nick": "¿Cómo te llaman?",
+        "photo": "¿Cómo luces?",
         "email": "Introduce tu email para enviarte la confirmación",
         "password": "Contraseña",
         "remember": "Mantener sesión abierta",
@@ -55,7 +60,7 @@
           "title": "Selecciona tu nación"
         },
         "nick": {
-          "title": "¿Cómo te llaman?"
+          "title": "Personalización"
         },
         "terms": {
           "body": "Al registrarte, acepta todos los",
