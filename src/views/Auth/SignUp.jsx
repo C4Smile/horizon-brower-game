@@ -438,7 +438,7 @@ function SignUp() {
             id="photo"
             label={languageState.texts.auth.labels.photo}
             className="w-full rounded-full object-cover relative"
-            imgClassName="w-[125px] h-[125px] my-5 m-auto rounded-full"
+            imgClassName="w-[100px] h-[100px] my-5 m-auto rounded-full"
             value={photo}
             onChange={onChangePhoto}
           />

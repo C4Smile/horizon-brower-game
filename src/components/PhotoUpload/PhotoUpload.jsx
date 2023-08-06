@@ -24,9 +24,9 @@ function PhotoUpload({ id, className, imgClassName, label, value, onChange }) {
   return (
     <div className={className}>
       <label htmlFor={id}>{label}</label>
-      <input ref={inputRef} type="file" onChange={(e) => onChange(id, e)} />
+      <input accept="image/*" ref={inputRef} type="file" onChange={(e) => onChange(id, e)} />
       {loading ? (
-        <Loading className="absolute top-0 left-0 w-full h-full bg-dark-background2" />
+        <Loading className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-dark-background2" />
       ) : null}
       <div className="group w-full h-full relative">
         <div className="pointer-events-none opacity-0 group-hover:opacity-[1] transition w-full h-full absolute flex items-center justify-center top-0 left-0 bg-dark-drawer-background">

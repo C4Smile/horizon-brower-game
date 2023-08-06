@@ -21,11 +21,11 @@ function SignOut() {
   const signOut = async () => {
     try {
       await signOutUser(getUserName());
-      setUserState({ type: "logged-out" });
-      logoutUser();
     } catch (err) {
       console.error(err);
     }
+    setUserState({ type: "logged-out" });
+    logoutUser();
     navigate("/");
   };
 
