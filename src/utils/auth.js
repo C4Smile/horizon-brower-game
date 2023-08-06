@@ -112,11 +112,4 @@ export const userData = () => {
 export const logUser = (remember, data) => {
   if (data.user) localStorage.setItem(config.userCookie, data.user);
   if (data.photo) localStorage.setItem(config.userPhotoCookie, data.photo);
-  if (data.actions)
-    localStorage.setItem(
-      config.userActionsCookie,
-      JSON.stringify(data.actions)
-    );
-  if (data.apps)
-    localStorage.setItem(config.userAppsCookie, JSON.stringify(data.apps));
 };

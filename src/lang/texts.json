@@ -51,7 +51,12 @@
         "title": "Registrarse",
         "submit": "Crear cuenta",
         "already": "¿Ya tienes cuenta?",
-
+        "nation": {
+          "title": "Selecciona tu nación"
+        },
+        "nick": {
+          "title": "¿Cómo te llaman?"
+        },
         "terms": {
           "body": "Al registrarte, acepta todos los",
           "link": "Términos y Condiciones de uso de Horizon"

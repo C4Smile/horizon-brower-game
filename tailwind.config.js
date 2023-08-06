@@ -19,6 +19,7 @@ module.exports = {
       secondary: "#f50057",
       slight: "#f73378",
       sdark: "#ab003c",
+      "pdark-hover-full": "#000059dd",
       "pdark-hover": "#00005939",
       "p2dark-hover": "#00005970",
       "dark-drawer-background": "#222222ce",

@@ -83,7 +83,6 @@ const App = () => {
   const { modeState } = useMode();
 
   useEffect(() => {
-    console.log(modeState);
     if (modeState) {
       document.body.classList.add("bg-light-background");
       document.body.classList.remove("bg-dark-background");

@@ -36,7 +36,7 @@ function Auth() {
       <Outlet />
       <footer className="flex items-center justify-center w-full">
         <span className="dark:text-white">
-          Opta {new Date().getFullYear()} &#169;
+          Horizon {new Date().getFullYear()} &#169;
         </span>
       </footer>
     </section>
