@@ -15,6 +15,7 @@ function PhotoUpload({ id, className, imgClassName, label, value, onChange }) {
   const inputRef = useRef(null);
 
   const handleClick = useCallback(() => {
+    console.log(inputRef);
     if (inputRef !== null) inputRef.current.click();
   }, [inputRef]);
 
@@ -28,7 +29,7 @@ function PhotoUpload({ id, className, imgClassName, label, value, onChange }) {
         <Loading className="absolute top-0 left-0 w-full h-full bg-dark-background2" />
       ) : null}
       <div className="group w-full h-full relative">
-        <div className="opacity-0 group-hover:opacity-[1] transition w-full h-full absolute flex items-center justify-center top-0 left-0 bg-dark-drawer-background">
+        <div className="pointer-events-none opacity-0 group-hover:opacity-[1] transition w-full h-full absolute flex items-center justify-center top-0 left-0 bg-dark-drawer-background">
           <FontAwesomeIcon icon={faAdd} className="text-4xl" />
         </div>
         <img

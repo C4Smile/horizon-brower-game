@@ -54,11 +54,11 @@ export const saveNation = async (nation) => {
  * @param {string} nick
  * @returns
  */
-export const saveNick = async (nick) => {
+export const saveNick = async (nick, photo) => {
   const response = await axios.post(
     // @ts-ignore
     `${config.apiUrl}users/set-nick`,
-    { user: getUserName(), nick },
+    { user: getUserName(), nick, photo },
     {
       headers: getAuth,
     }

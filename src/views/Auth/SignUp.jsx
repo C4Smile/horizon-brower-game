@@ -246,7 +246,7 @@ function SignUp() {
         e.preventDefault();
         let noValid = requiredValidator({ nick }, ["nick"]);
         if (noValid) return;
-        const response = await saveRemoteNick(nick);
+        const response = await saveRemoteNick(nick, photo);
         if (response.message === "ok") {
           setUserState({
             type: "logged-in",
@@ -437,8 +437,8 @@ function SignUp() {
           <PhotoUpload
             id="photo"
             label={languageState.texts.auth.labels.photo}
-            className="w-full rounded-full object-cover"
-            imgClassName="w-[150px] h-[150px] my-5 m-auto rounded-full"
+            className="w-full rounded-full object-cover relative"
+            imgClassName="w-[125px] h-[125px] my-5 m-auto rounded-full"
             value={photo}
             onChange={onChangePhoto}
           />
