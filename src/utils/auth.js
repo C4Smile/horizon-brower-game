@@ -5,10 +5,7 @@ import config from "../config";
 import { validateBasicKey } from "../services/auth";
 
 // @ts-ignore
-import {
-  deleteCookie,
-  getCookie,
-} from "some-javascript-utils/browser";
+import { deleteCookie, getCookie } from "some-javascript-utils/browser";
 
 export const fromLocal = () => {
   const user = {};
@@ -19,20 +16,9 @@ export const fromLocal = () => {
   return user;
 };
 
-export const getUserName = () => {
-  let name = "";
-
-  // @ts-ignore
-  const local = localStorage.getItem(config.user);
-
-  name = local !== null ? local : "";
-  if (!name) {
-    // @ts-ignore
-    const session = sessionStorage.getItem(config.user);
-    name = session !== null ? session : "";
-  }
-  return name;
-};
+export const getUserName = () => localStorage.getItem(config.user);
+export const getUserNick = () => localStorage.getItem(config.userNick);
+export const getUserNation = () => localStorage.getItem(config.userNation);
 
 export const isAdmin = async () => {
   const value = await validateBasicKey("admin");

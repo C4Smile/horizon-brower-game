@@ -1,5 +1,6 @@
-import { useEffect, useCallback, useMemo, useState } from "react";
+import { useEffect, useCallback, useMemo, useState, Suspense } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import loadable from "@loadable/component";
 
 import { createCookie } from "some-javascript-utils/browser";
 
@@ -18,11 +19,10 @@ import { useNotification } from "../../contexts/NotificationProvider";
 
 // components
 import Loading from "../../components/Loading/Screen";
-import PhotoUpload from "../../components/PhotoUpload/PhotoUpload";
 import SimpleInput from "../../components/SimpleInput/SimpleInput";
 
 // services
-import { signUp, saveNick as saveRemoteNick } from "../../services/users";
+import { signUp } from "../../services/users";
 
 // utils
 import { logUser } from "../../utils/auth";
@@ -31,9 +31,10 @@ import config from "../../config";
 
 // styles
 import styles from "./signIn.module.css";
+import Personalization from "./components/Personalization";
 
 // local components
-import Nation from "./components/Nation";
+const Nation = loadable(() => import("./components/Nation"));
 
 function SignUp() {
   const { languageState } = useLanguage();
@@ -81,7 +82,7 @@ function SignUp() {
 
   const navigate = useNavigate();
 
-  const { userState, setUserState } = useUser();
+  const { userState } = useUser();
 
   const [loading, setLoading] = useState(true);
 
@@ -168,77 +169,8 @@ function SignUp() {
     ]
   );
 
-  const [nick, setNick] = useState("");
-  const [photo, setPhoto] = useState("");
-  const onChangePhoto = useCallback(
-    (id, elem) => {
-      if (elem.target.files[0].size > 15288000) {
-        showNotification("error", languageState.texts.errors.fileToBig);
-
-        elem.target.value = "";
-      } else {
-        if (!elem.target.files || !elem.target.files[0]) return;
-
-        const FR = new FileReader();
-
-        FR.addEventListener("load", function (evt) {
-          setPhoto(evt.target?.result);
-        });
-
-        FR.readAsDataURL(elem.target.files[0]);
-      }
-    },
-    [languageState, showNotification]
-  );
-
-  const handleNick = (e) => setNick(e.target.value);
-  const [nation, setNation] = useState("");
-
-  const saveNick = useCallback(
-    async (e) => {
-      setLoading(true);
-
-      try {
-        setHelperTexts({});
-        e.preventDefault();
-        let noValid = requiredValidator({ nick }, ["nick"]);
-        if (noValid) return;
-        const response = await saveRemoteNick(nick, photo);
-        if (response.message === "ok") {
-          setUserState({
-            type: "logged-in",
-            user: { user, nick, photo, nation },
-          });
-          navigate("/");
-        } else {
-          if (response.message === "nick") {
-            document.getElementById("nick")?.focus();
-            showNotification("error", errors.emailUsed);
-          }
-        }
-      } catch (err) {
-        console.error(err);
-        if (String(err) === "AxiosError: Network Error")
-          showNotification("error", errors.notConnected);
-        else showNotification("error", String(err));
-      }
-      setLoading(false);
-    },
-    [
-      user,
-      nick,
-      photo,
-      nation,
-      requiredValidator,
-      showNotification,
-      setUserState,
-      errors,
-      navigate,
-    ]
-  );
-
   return (
-    <>
+    <Suspense>
       {loading ? <Loading className="fixed-loading" /> : null}
       {doing === 0 ? (
         <form
@@ -354,48 +286,21 @@ function SignUp() {
       ) : null}
       {doing === 1 ? (
         <Nation
-          user={user}
-          updateNation={setNation}
-          changeDoing={() => setDoing(2)}
           setLoading={setLoading}
+          changeDoing={() => setDoing(2)}
+          showNotification={showNotification}
         />
       ) : null}
       {doing === 2 ? (
-        <form
-          onSubmit={saveNick}
-          className="flex flex-col items-center justify-start"
-        >
-          <h2>{auth.signUp.nick.title}</h2>
-          <PhotoUpload
-            id="photo"
-            label={languageState.texts.auth.labels.photo}
-            className="w-full rounded-full object-cover relative"
-            imgClassName="w-[100px] h-[100px] my-5 m-auto rounded-full"
-            value={photo}
-            onChange={onChangePhoto}
-          />
-          <SimpleInput
-            id="nick"
-            className="input-control"
-            label={languageState.texts.auth.labels.nick}
-            inputProps={{
-              className: "input primary w-full",
-              value: nick,
-              onChange: handleNick,
-              type: "text",
-            }}
-          />
-          <button
-            type="submit"
-            name="save-personalization"
-            aria-label={`${languageState.texts.buttons.save} ${auth.signUp.nick.title}`}
-            className="button primary self-end hover:bg-pdark hover:border-pdark cursor-default"
-          >
-            {languageState.texts.buttons.save}
-          </button>
-        </form>
+        <Personalization
+          setLoading={setLoading}
+          helperTexts={helperTexts}
+          setHelperTexts={setHelperTexts}
+          showNotification={showNotification}
+          requiredValidator={requiredValidator}
+        />
       ) : null}
-    </>
+    </Suspense>
   );
 }
 

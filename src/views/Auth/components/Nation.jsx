@@ -9,7 +9,6 @@ import { logUser } from "../../../utils/auth";
 
 // contexts
 import { useLanguage } from "../../../contexts/LanguageProvider";
-import { useNotification } from "../../../contexts/NotificationProvider";
 
 // services
 import { nations } from "../../../services/nation";
@@ -20,19 +19,8 @@ import config from "../../../config";
 // styles
 import styles from "../signIn.module.css";
 
-function Nation({ updateNation, changeDoing, setLoading }) {
+function Nation({ changeDoing, setLoading, showNotification }) {
   const { languageState } = useLanguage();
-  const { setNotificationState } = useNotification();
-
-  const showNotification = useCallback(
-    (ntype, message) =>
-      setNotificationState({
-        type: "set",
-        ntype,
-        message,
-      }),
-    [setNotificationState]
-  );
 
   const { auth, errors } = useMemo(() => {
     return {
@@ -69,7 +57,7 @@ function Nation({ updateNation, changeDoing, setLoading }) {
     try {
       await saveRemoteNation(nation);
       logUser(false, { nation });
-      updateNation(nation);
+
       changeDoing();
     } catch (err) {
       console.error(err);
@@ -78,7 +66,7 @@ function Nation({ updateNation, changeDoing, setLoading }) {
       else showNotification("error", String(err));
     }
     setLoading(false);
-  }, [nation, errors, showNotification]);
+  }, [nation, errors, showNotification, changeDoing, setLoading]);
 
   useEffect(() => {
     if (nation.length) saveNation();
@@ -116,10 +104,9 @@ function Nation({ updateNation, changeDoing, setLoading }) {
 }
 
 Nation.propTypes = {
-  user: PropTypes.string,
-  updateNation: PropTypes.function,
-  changeDoing: PropTypes.func,
   setLoading: PropTypes.func,
+  changeDoing: PropTypes.func,
+  showNotification: PropTypes.func,
 };
 
 export default Nation;
