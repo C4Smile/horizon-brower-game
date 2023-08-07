@@ -18,17 +18,11 @@ import { useNotification } from "../../contexts/NotificationProvider";
 
 // components
 import Loading from "../../components/Loading/Screen";
-import PrintAfter from "../../components/PrintAfter/PrintAfter";
 import PhotoUpload from "../../components/PhotoUpload/PhotoUpload";
 import SimpleInput from "../../components/SimpleInput/SimpleInput";
 
 // services
-import {
-  signUp,
-  saveNation as saveRemoteNation,
-  saveNick as saveRemoteNick,
-} from "../../services/users";
-import { nations } from "../../services/nation";
+import { signUp, saveNick as saveRemoteNick } from "../../services/users";
 
 // utils
 import { logUser } from "../../utils/auth";
@@ -37,6 +31,9 @@ import config from "../../config";
 
 // styles
 import styles from "./signIn.module.css";
+
+// local components
+import Nation from "./components/Nation";
 
 function SignUp() {
   const { languageState } = useLanguage();
@@ -171,47 +168,6 @@ function SignUp() {
     ]
   );
 
-  const [nation, setNation] = useState("");
-  const [nationList, setNationList] = useState([]);
-
-  const fetchNations = async () => {
-    setLoading(true);
-    try {
-      const response = await nations();
-      const { rows } = response;
-      setNationList(rows);
-    } catch (err) {
-      console.error(err);
-      if (String(err) === "AxiosError: Network Error")
-        showNotification("error", errors.notConnected);
-      else showNotification("error", String(err));
-    }
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    if (doing === 1) fetchNations();
-  }, [doing]);
-
-  const saveNation = useCallback(async () => {
-    setLoading(true);
-    try {
-      await saveRemoteNation(nation);
-      logUser(false, { nation });
-      setDoing(2);
-    } catch (err) {
-      console.error(err);
-      if (String(err) === "AxiosError: Network Error")
-        showNotification("error", errors.notConnected);
-      else showNotification("error", String(err));
-    }
-    setLoading(false);
-  }, [nation, errors, showNotification]);
-
-  useEffect(() => {
-    if (nation.length) saveNation();
-  }, [nation]);
-
   const [nick, setNick] = useState("");
   const [photo, setPhoto] = useState("");
   const onChangePhoto = useCallback(
@@ -236,6 +192,7 @@ function SignUp() {
   );
 
   const handleNick = (e) => setNick(e.target.value);
+  const [nation, setNation] = useState("");
 
   const saveNick = useCallback(
     async (e) => {
@@ -396,37 +353,12 @@ function SignUp() {
         </form>
       ) : null}
       {doing === 1 ? (
-        <div className={`appear ${styles.nation}`}>
-          <h2 className="text-center">{auth.signUp.nation.title}</h2>
-          <div className="flex items-start justify-center gap-5 mt-5 flex-wrap">
-            {nationList.map((nation, i) => (
-              <PrintAfter
-                key={nation.id}
-                delay={(i + 1) * 300}
-                animation="appear"
-              >
-                <button
-                  name="select-nation"
-                  onClick={() => setNation(nation.id)}
-                  className={`group ${styles.nationCard}`}
-                  aria-label={`${languageState.texts.ariaLabels.selectNation} ${nation.name}`}
-                >
-                  <img
-                    src={`${config.apiPhoto}${nation.photo}`}
-                    alt={nation.name}
-                  />
-
-                  <div
-                    className={`group-hover:opacity-100 group-hover:translate-y-0 ${styles.nationCardContent}`}
-                  >
-                    <h3>{nation.name}</h3>
-                    <p>{nation.description}</p>
-                  </div>
-                </button>
-              </PrintAfter>
-            ))}
-          </div>
-        </div>
+        <Nation
+          user={user}
+          updateNation={setNation}
+          changeDoing={() => setDoing(2)}
+          setLoading={setLoading}
+        />
       ) : null}
       {doing === 2 ? (
         <form
