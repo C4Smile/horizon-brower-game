@@ -107,7 +107,13 @@ function SignIn() {
         const { data } = response;
         const { expiration, token, state } = data;
         createCookie(config.basicKey, expiration, token);
-        logUser(remember, { user: data.user, photo: data.photo });
+        logUser(remember, {
+          user: data.user,
+          photo: data.photo,
+          nation: data.nation,
+          nick: data.nick,
+          state: data.state,
+        });
         setUserState({
           type: "logged-in",
           user: {

@@ -1,5 +1,6 @@
 import { Suspense, useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import loadable from "@loadable/component";
 
 // some-javascript-utils
 import { getUserLanguage } from "some-javascript-utils/browser";
@@ -32,10 +33,20 @@ import { validateBasicKey } from "./services/auth";
 
 import config from "./config";
 
+// lazy
+const Notification = loadable(() =>
+  import("./components/Notification/Notification")
+);
+const FinishPersonalization = loadable(() =>
+  import("./views/Auth/components/FinishPersonalization")
+);
+
 const App = () => {
   const { setModeState } = useMode();
-  const { setUserState } = useUser();
+
   const { setLanguageState } = useLanguage();
+  const { userState, setUserState } = useUser();
+
   const [, setLoading] = useState(true);
 
   const fetch = async () => {
@@ -92,8 +103,13 @@ const App = () => {
     }
   }, [modeState]);
 
+  useEffect(() => {
+    console.log(userState);
+  }, [userState]);
+
   return (
     <div>
+      <Notification />
       <BrowserRouter>
         {/* <Routes>
           {hasNation ? (
@@ -122,7 +138,16 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes> */}
         <Routes>
-          <Route exact path="/" element={<View />}>
+          <Route
+            exact
+            path="/"
+            element={
+              <Suspense>
+                <FinishPersonalization />
+                <View />
+              </Suspense>
+            }
+          >
             <Route index element={<Home />} />
           </Route>
           <Route exact path="/auth" element={<Auth />}>

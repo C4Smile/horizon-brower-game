@@ -28,6 +28,7 @@ export default function Notification() {
   const [openR, setOpenR] = useState(false);
 
   useEffect(() => {
+    console.log(notificationState);
     if (notificationState.visible) {
       setOpen(true);
       setOpenR(true);

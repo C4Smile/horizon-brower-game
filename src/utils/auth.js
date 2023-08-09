@@ -13,6 +13,7 @@ export const fromLocal = () => {
   user.nick = localStorage.getItem(config.userNick);
   user.nation = localStorage.getItem(config.userNation);
   user.photo = localStorage.getItem(config.userPhoto);
+  user.state = localStorage.getItem(config.userState);
   return user;
 };
 
@@ -52,4 +53,5 @@ export const logUser = (remember, data) => {
   if (data.nick) localStorage.setItem(config.userNick, data.nick);
   if (data.nation) localStorage.setItem(config.userNation, data.nation);
   if (data.photo) localStorage.setItem(config.userPhoto, data.photo);
+  if (data.state) localStorage.setItem(config.userState, data.state);
 };

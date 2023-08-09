@@ -12,7 +12,7 @@ import { useLanguage } from "../../../contexts/LanguageProvider";
 
 // services
 import { saveNick as saveRemoteNick } from "../../../services/users";
-import { getUserName, getUserNation } from "../../../utils/auth";
+import { getUserName, getUserNation, logUser } from "../../../utils/auth";
 
 function Personalization({
   setLoading,
@@ -70,16 +70,16 @@ function Personalization({
         if (noValid) return;
         const response = await saveRemoteNick(nick, photo);
         if (response.message === "ok") {
+          logUser(false, { state: 0 });
           setUserState({
             type: "logged-in",
             user: { user: getUserName(), nick, photo, nation: getUserNation() },
           });
-          console.log(userState);
-          // navigate("/");
+          navigate("/");
         } else {
-          if (response.message === "nick") {
+          if (response.message === "exist") {
             document.getElementById("nick")?.focus();
-            showNotification("error", errors.emailUsed);
+            showNotification("error", errors.nickUsed);
           }
         }
       } catch (err) {
@@ -93,20 +93,21 @@ function Personalization({
     [
       nick,
       photo,
+      navigate,
       requiredValidator,
       showNotification,
       setUserState,
       errors,
-      navigate,
       setHelperTexts,
       setLoading,
+      userState,
     ]
   );
 
   return (
     <form
       onSubmit={saveNick}
-      className="flex flex-col items-center justify-start"
+      className="flex flex-col items-center justify-start max-w-[250px]"
     >
       <h2>{auth.signUp.nick.title}</h2>
       <PhotoUpload

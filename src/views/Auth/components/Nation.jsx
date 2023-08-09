@@ -38,6 +38,7 @@ function Nation({ changeDoing, setLoading, showNotification }) {
     try {
       const response = await nations();
       const { rows } = response;
+      logUser(false, { state: -1 });
       setNationList(rows);
     } catch (err) {
       console.error(err);
