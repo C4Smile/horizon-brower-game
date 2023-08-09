@@ -32,7 +32,7 @@ function Personalization({
     };
   }, [languageState]);
 
-  const { setUserState } = useUser();
+  const { userState, setUserState } = useUser();
 
   const [nick, setNick] = useState("");
   const [photo, setPhoto] = useState("");
@@ -74,7 +74,8 @@ function Personalization({
             type: "logged-in",
             user: { user: getUserName(), nick, photo, nation: getUserNation() },
           });
-          navigate("/");
+          console.log(userState);
+          // navigate("/");
         } else {
           if (response.message === "nick") {
             document.getElementById("nick")?.focus();
@@ -112,7 +113,7 @@ function Personalization({
         id="photo"
         label={languageState.texts.auth.labels.photo}
         className="w-full rounded-full object-cover relative"
-        imgClassName="w-[100px] h-[100px] my-5 m-auto rounded-full"
+        imgClassName="!w-[100px] !h-[100px] my-5 m-auto rounded-full"
         value={photo}
         onChange={onChangePhoto}
       />

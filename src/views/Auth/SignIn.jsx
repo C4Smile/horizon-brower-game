@@ -105,10 +105,19 @@ function SignIn() {
         setLoading(true);
         const response = await login(user, password, remember);
         const { data } = response;
-        const { expiration, token } = data;
+        const { expiration, token, state } = data;
         createCookie(config.basicKey, expiration, token);
-        logUser(remember, { user: data.user, photo: data.photo, });
-        setUserState({ type: "logged-in", user: { user: data.user } });
+        logUser(remember, { user: data.user, photo: data.photo });
+        setUserState({
+          type: "logged-in",
+          user: {
+            user: data.user,
+            photo: data.photo,
+            state,
+            nation: data.nation,
+            nick: data.nick,
+          },
+        });
         navigate("/");
       } catch (err) {
         console.error(err);
@@ -129,9 +138,7 @@ function SignIn() {
 
   return (
     <>
-      {loading ? (
-        <Loading className="fixed-loading" />
-      ) : null}
+      {loading ? <Loading className="fixed-loading" /> : null}
       <form
         onSubmit={onSubmit}
         className={`entrance bg-light-background dark:bg-dark-background ${styles.main}`}
