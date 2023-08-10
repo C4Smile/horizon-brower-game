@@ -2,6 +2,8 @@ import { Suspense, useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import loadable from "@loadable/component";
 
+import io from "socket.io-client";
+
 // some-javascript-utils
 import { getUserLanguage } from "some-javascript-utils/browser";
 
@@ -26,7 +28,7 @@ import { useUser } from "./contexts/UserProvider.jsx";
 import { useLanguage } from "./contexts/LanguageProvider";
 
 // utils
-import { logoutUser, userLogged, fromLocal } from "./utils/auth";
+import { logoutUser, userLogged, fromLocal, getUserName } from "./utils/auth";
 
 // services
 import { validateBasicKey } from "./services/auth";
@@ -104,8 +106,31 @@ const App = () => {
   }, [modeState]);
 
   useEffect(() => {
-    console.log(userState);
-  }, [userState]);
+    console.log(config.apiSocket);
+    if (
+      userState.user &&
+      (!userState.socket || (userState.socket && !userState.socket.connected))
+    ) {
+      const newSocket = io(config.apiSocket, { transports: ["polling"] });
+
+      newSocket.on("connect", () => {
+        console.info("connect", getUserName());
+        newSocket.emit("send-user-id", getUserName());
+      });
+      newSocket.on("user-logged", (options) => {
+        const { date } = options;
+        localStorage.setItem("date", date);
+      });
+      newSocket.on("plus-minute", (date) => {
+        localStorage.setItem("date", date);
+      });
+
+      /* setUserState({ type: "socket", socket: newSocket }); */
+      return () => {
+        newSocket.close();
+      };
+    }
+  }, [userState, setUserState]);
 
   return (
     <div>

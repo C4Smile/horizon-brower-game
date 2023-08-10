@@ -21,7 +21,6 @@ function Navbar() {
   const { modeState, toggleModeState } = useMode();
 
   const printLinks = useCallback(() => {
-    console.log(userState);
     return languageState.texts.nav.links
       .filter((link) => {
         switch (link.logged) {

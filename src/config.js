@@ -19,7 +19,7 @@ const {
 const config = {
   apiUrl: VITE_API_URL,
   apiPhoto: VITE_API_PHOTO,
-  apiSocket: VITE_API_PHOTO,
+  apiSocket: VITE_API_SOCKET,
   // cookie
   language: VITE_LANGUAGE,
   basicKey: VITE_BASIC_KEY,

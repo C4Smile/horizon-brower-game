@@ -53,7 +53,6 @@ function FinishPersonalization() {
   );
 
   useEffect(() => {
-    console.log(userState);
     if (userState.user) {
       switch (userState.user.state) {
         case "-1":

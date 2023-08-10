@@ -14,6 +14,7 @@ export const fromLocal = () => {
   user.nation = localStorage.getItem(config.userNation);
   user.photo = localStorage.getItem(config.userPhoto);
   user.state = localStorage.getItem(config.userState);
+  console.log("user", user, config);
   return user;
 };
 
@@ -41,6 +42,7 @@ export const logoutUser = () => {
   localStorage.removeItem(config.userNick);
   localStorage.removeItem(config.userNation);
   localStorage.removeItem(config.userPhoto);
+  localStorage.removeItem(config.userState);
 };
 
 /**
@@ -49,9 +51,11 @@ export const logoutUser = () => {
  * @param {object} data - The user object that you want to store in the browser.
  */
 export const logUser = (remember, data) => {
+  console.log(config);
   if (data.user) localStorage.setItem(config.user, data.user);
   if (data.nick) localStorage.setItem(config.userNick, data.nick);
   if (data.nation) localStorage.setItem(config.userNation, data.nation);
   if (data.photo) localStorage.setItem(config.userPhoto, data.photo);
   if (data.state) localStorage.setItem(config.userState, data.state);
+  console.log("data", data);
 };

@@ -47,7 +47,7 @@ const SelectNation = () => {
       const { data } = response;
       setNations({ type: "set", newArray: data.nations });
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
     setLoading(false);
   };

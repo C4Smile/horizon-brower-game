@@ -15,7 +15,6 @@ function PhotoUpload({ id, className, imgClassName, label, value, onChange }) {
   const inputRef = useRef(null);
 
   const handleClick = useCallback(() => {
-    console.log(inputRef);
     if (inputRef !== null) inputRef.current.click();
   }, [inputRef]);
 
@@ -24,7 +23,12 @@ function PhotoUpload({ id, className, imgClassName, label, value, onChange }) {
   return (
     <div className={className}>
       <label htmlFor={id}>{label}</label>
-      <input accept="image/*" ref={inputRef} type="file" onChange={(e) => onChange(id, e)} />
+      <input
+        accept="image/*"
+        ref={inputRef}
+        type="file"
+        onChange={(e) => onChange(id, e)}
+      />
       {loading ? (
         <Loading className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-dark-background2" />
       ) : null}

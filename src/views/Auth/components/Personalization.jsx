@@ -32,7 +32,7 @@ function Personalization({
     };
   }, [languageState]);
 
-  const { userState, setUserState } = useUser();
+  const { setUserState } = useUser();
 
   const [nick, setNick] = useState("");
   const [photo, setPhoto] = useState("");
@@ -100,7 +100,6 @@ function Personalization({
       errors,
       setHelperTexts,
       setLoading,
-      userState,
     ]
   );
 

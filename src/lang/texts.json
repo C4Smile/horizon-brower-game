@@ -29,7 +29,8 @@
       "nickUser": "Ya existe un usuario con ese alias",
       "nickRequired": "Debes introducir un alias",
       "passwordRequired": "Debes introducir tu contraseña",
-      "passwordsAreNotEqual": "Las contraseñas no coinciden"
+      "passwordsAreNotEqual": "Las contraseñas no coinciden",
+      "wrongCredentials": "Usuario o contraseña incorrecta"
     },
     "inputs": {
       "name": "Nombre y Apellidos",

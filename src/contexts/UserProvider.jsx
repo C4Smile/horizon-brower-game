@@ -10,11 +10,16 @@ const UserContext = createContext();
 const userReducer = (userState, action) => {
   const { type } = action;
   switch (type) {
+    case "socket": {
+      const { socket } = action;
+      return { ...userState, socket };
+    }
     case "logged-out":
+      if (userState.socket) userState.socket.disconnect();
       return {};
     case "logged-in": {
       const { user } = action;
-
+      console.log("userState", user);
       return { user };
     }
     default:

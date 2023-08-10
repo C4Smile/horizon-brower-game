@@ -128,13 +128,19 @@ function SignIn() {
       } catch (err) {
         console.error(err);
         const { response } = err;
-        console.log(String(err));
+        console.log(response);
         if (String(err) === "AxiosError: Network Error")
           showNotification("error", errors.notConnected);
         else if (response) {
           const { status } = response;
-          if (status === 403)
-            showNotification("error", errors.accountAlreadyOpened);
+          switch (status) {
+            case 403:
+              showNotification("error", errors.accountAlreadyOpened);
+              break;
+            case 401:
+              showNotification("error", errors.wrongCredentials);
+              break;
+          }
         } else showNotification("error", String(err));
       }
       setLoading(false);
