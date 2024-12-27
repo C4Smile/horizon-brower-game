@@ -8,7 +8,11 @@ import SignIn from "./Auth/SignIn";
 import SignUp from "./Auth/SignUp";
 import Recovery from "./Auth/Recovery";
 import UpdatePassword from "./Auth/UpdatePassword";
+import SignedUp from "./Auth/SignedUp.jsx";
+import AccountConfirmed from "./Auth/AccountConfirmed.jsx";
+// home
 import Home from "./Home.jsx";
+// game
 import Game from "./Game/Game.jsx";
 
 export const pageId = {
@@ -16,11 +20,13 @@ export const pageId = {
   signOut: "signOut",
   signIn: "signIn",
   signUp: "signUp",
+  signedUp: "signedUp",
+  accountConfirmed: "accountConfirmed",
   recovery: "recover",
   updatePassword: "updatePassword",
   dashboard: "dashboard",
   home: "home",
-  settings: "settings"
+  settings: "settings",
 };
 
 export const sitemap = [
@@ -32,40 +38,50 @@ export const sitemap = [
       {
         key: pageId.signIn,
         path: "/",
-        component: <SignIn />
+        component: <SignIn />,
       },
       {
         key: pageId.signUp,
         path: "/sign-up",
-        component: <SignUp />
+        component: <SignUp />,
+      },
+      {
+        key: pageId.signedUp,
+        path: "/signed-up",
+        component: <SignedUp />,
+      },
+      {
+        key: pageId.accountConfirmed,
+        path: "/account-confirmed",
+        component: <AccountConfirmed />,
       },
       {
         key: pageId.recovery,
         path: "/recover",
-        component: <Recovery />
+        component: <Recovery />,
       },
       {
         key: pageId.updatePassword,
         path: "/update-password",
-        component: <UpdatePassword />
-      }
-    ]
+        component: <UpdatePassword />,
+      },
+    ],
   },
   {
     key: pageId.dashboard,
     component: <Game />,
-    path: "/game"
+    path: "/game",
   },
   {
     key: pageId.home,
     component: <Home />,
-    path: "/"
+    path: "/",
   },
   {
     key: pageId.signOut,
     component: <SignOut />,
-    path: "/sign-out"
-  }
+    path: "/sign-out",
+  },
 ];
 
 /**

@@ -46,6 +46,15 @@
     },
     "signOut": {
       "title": "Cerrar sesión"
+    },
+    "signedUp": {
+      "title": "Registro satisfactorio",
+      "body": "Revisa tu bandeja de entrada, hemos enviado un correo para verificar tu cuenta"
+    },
+    "accountConfirmed": {
+      "title": "Cuenta confirmada",
+      "body": "Bienvenido oficialmente a Horizon, comienza tu aventura",
+      "start": "Comenzar"
     }
   },
   "dashboard": {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // components
 import Logo from "../../components/Logo/Logo";
@@ -21,6 +21,8 @@ import { findPath, pageId } from "../sitemap";
  */
 function SignUp() {
   const { t } = useTranslation();
+
+  const navigate = useNavigate();
 
   const { logUser } = useAccount();
 
@@ -44,7 +46,7 @@ function SignUp() {
     setSaving(true);
 
     try {
-      const result = await horizonApiClient.User.login(d.email, d.password);
+      const result = await horizonApiClient.User.signUp(d.email, d.password);
       const data = await result.json();
       // set server status to notification
       if (data.status) {
@@ -55,6 +57,7 @@ function SignUp() {
           const horizonUser = await request.json();
           if (horizonUser) logUser({ ...data, horizonUser });
           else logUser({ ...data });
+          navigate(findPath(pageId.signedUp));
         }
       }
     } catch (e) {
