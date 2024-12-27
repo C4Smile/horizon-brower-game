@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useContext, useCallback } from "react";
 
 // prop-types is a library for typechecking of props
@@ -49,7 +50,6 @@ const AccountProvider = (props) => {
         }
       } else logoutUser();
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error(err);
       logoutUser();
     }

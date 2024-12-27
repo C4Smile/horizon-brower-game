@@ -26,20 +26,15 @@ const GameProvider = (props) => {
   const horizonApiClient = useHorizonApiClient();
   const { account } = useAccount();
 
-
   const gameDataQuery = useQuery({
     queryFn: () => horizonApiClient.GameBasics.gameData(),
     queryKey: [ReactQueryKeys.GameData, fromLocal(config.hash)],
-    enabled: !!account.user.id
+    enabled: !!account?.user?.id,
   });
 
   const gameData = useMemo(() => gameDataQuery.data ?? {}, [gameDataQuery.data]);
 
-  return (
-    <GameClientContext.Provider value={{ ...gameData }}>
-      {children}
-    </GameClientContext.Provider>
-  );
+  return <GameClientContext.Provider value={{ ...gameData }}>{children}</GameClientContext.Provider>;
 };
 
 const useGame = () => {

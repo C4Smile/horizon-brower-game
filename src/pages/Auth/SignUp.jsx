@@ -30,9 +30,7 @@ function SignUp() {
   const [passwordError, setPasswordError] = useState("");
   const [saving, setSaving] = useState(false);
 
-  const { handleSubmit, control } = useForm(
-    { email: "", password: "", rPassword: "" }
-  );
+  const { handleSubmit, control } = useForm({ email: "", password: "", rPassword: "" });
 
   const { setNotification } = useNotification();
 
@@ -73,43 +71,22 @@ function SignUp() {
         onSubmit={handleSubmit(onSubmit)}
         className="w-96 max-sm:w-10/12 px-5 flex flex-col gap-2 items-center justify-start m-auto"
       >
-        <Logo
-          className={`w-28 h-28 mb-10`}
-        />
-        <h1
-          className={`w-full text-2xl md:text-3xl mb-5`}
-        >
-          {t("_pages:auth.signUp.title")}
-        </h1>
-        <div
-          className={`w-full`}
-        >
-          <label>
-            {t("_entities:user.email.label")}
-          </label>
+        <Logo className={`w-28 h-28 mb-10`} />
+        <h1 className={`w-full text-2xl md:text-3xl mb-5`}>{t("_pages:auth.signUp.title")}</h1>
+        <div className={`w-full`}>
+          <label>{t("_entities:user.email.label")}</label>
           <Controller
             control={control}
             disabled={saving}
             name="email"
             render={({ field: { value, ...rest } }) => (
-              <input
-                {...rest}
-                value={value ?? ""}
-                type="email"
-                name="email"
-                id="email"
-                required
-              />
+              <input {...rest} value={value ?? ""} type="email" name="email" id="email" required />
             )}
           />
           <p className="text-error">{userError}</p>
         </div>
-        <div
-          className={`w-full`}
-        >
-          <label>
-            {t("_entities:user.password.label")}
-          </label>
+        <div className={`w-full`}>
+          <label>{t("_entities:user.password.label")}</label>
           <Controller
             control={control}
             disabled={saving}
@@ -126,12 +103,8 @@ function SignUp() {
             )}
           />
         </div>
-        <div
-          className={`w-full`}
-        >
-          <label>
-            {t("_entities:user.rPassword.label")}
-          </label>
+        <div className={`w-full`}>
+          <label>{t("_entities:user.rPassword.label")}</label>
           <Controller
             control={control}
             disabled={saving}
@@ -149,27 +122,25 @@ function SignUp() {
           />
           <p className=" text-error">{passwordError}</p>
         </div>
-
-        <button
-          type=" submit"
-          disabled={saving}
-          className={`mb-5 self-start submit`}
-        >
-          {saving && (
-            <Loading
-              className="button-loading"
-              strokeWidth="4"
-              loaderClass="!w-6"
-              color="stroke-white"
-            />
-          )}
-          {t("_accessibility:buttons.submit")}
-        </button>
-
+        <div className="w-full mb-5 flex gap-2">
+          <button type=" submit" disabled={saving} className={`mb-5 submit`}>
+            {saving && (
+              <Loading
+                className="button-loading"
+                strokeWidth="4"
+                loaderClass="!w-6"
+                color="stroke-white"
+              />
+            )}
+            {t("_accessibility:buttons.submit")}
+          </button>
+          <Link to="/auth" disabled={saving} className={`mb-5 submit`}>
+            {t("_accessibility:buttons.signIn")}
+          </Link>
+        </div>
       </form>
     </div>
-  )
-    ;
+  );
 }
 
 export default SignUp;

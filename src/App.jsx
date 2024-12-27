@@ -34,7 +34,6 @@ const renderRoutes = (sitemap, userRole, parentRoute) =>
       }
     });
 
-
 export const App = () => {
   const [loaded, setLoaded] = useState(true);
 
@@ -62,6 +61,8 @@ export const App = () => {
       }, 1000);
     return routes;
   }, [userRole]);
+
+  console.log(routes);
 
   return (
     <>
