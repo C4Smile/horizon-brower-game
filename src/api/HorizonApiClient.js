@@ -11,14 +11,7 @@ import { SkillApiClient } from "./SkillApiClient.js";
 import { ShipApiClient } from "./ShipApiClient.js";
 import { CannonApiClient } from "./CannonApiClient.js";
 
-// services
-import { makeRequest } from "../db/services";
-
-// utils
-import { fromLocal } from "../utils/local";
-
 // config
-import config from "../config";
 import { GameBasicsApiClient } from "./GameBasicsApiClient.js";
 
 /**
@@ -52,7 +45,6 @@ export class HorizonApiClient {
   get GameBasics() {
     return this.basics;
   }
-
 
   /**
    * @returns {ImageApiClient} Image

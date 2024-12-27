@@ -7,7 +7,6 @@ import { fromLocal } from "../utils/local";
 // services
 import { makeRequest } from "../db/services";
 
-
 /**
  * ImageApiClient
  */
@@ -28,7 +27,7 @@ export class ImageApiClient {
    */
   async insertImage(photo) {
     const { error, data, status } = await makeRequest("images", "POST", photo, {
-      Authorization: "Bearer " + fromLocal(config.user, "object")?.token
+      Authorization: "Bearer " + fromLocal(config.user, "object")?.token,
     });
     return { error, data, status: status === 204 ? 201 : status };
   }
@@ -63,12 +62,11 @@ export class ImageApiClient {
         "POST",
         { base64, folder, fileName: photo.name },
         {
-          Authorization: "Bearer " + fromLocal(config.user, "object")?.token
-        }
+          Authorization: "Bearer " + fromLocal(config.user, "object")?.token,
+        },
       );
 
       if (error) {
-        // eslint-disable-next-line no-console
         console.error(error.message);
         return { error };
       }
@@ -85,7 +83,7 @@ export class ImageApiClient {
    */
   async deleteImage(id) {
     const { error } = await makeRequest(`images/${id}`, "DELETE", null, {
-      Authorization: "Bearer " + fromLocal(config.user, "object")?.token
+      Authorization: "Bearer " + fromLocal(config.user, "object")?.token,
     });
     if (error) return error.status;
     return 200;
