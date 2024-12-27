@@ -1,8 +1,27 @@
+import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getCookie, createCookie } from "some-javascript-utils/browser";
+import { AccountStatus } from "./SignedUp";
+
+// config
+import config from "../../config";
 
 function AccountConfirmed() {
+  const navigate = useNavigate();
+
   const { t } = useTranslation();
+
+  useEffect(() => {
+    const cookie = getCookie(config.validating);
+    switch (cookie) {
+      case AccountStatus.validating:
+        createCookie(config.validating, 1, AccountStatus.validated);
+        break;
+      default:
+        return navigate("/");
+    }
+  }, [navigate]);
 
   return (
     <div className="w-full h-screen flex items-center justify-center">

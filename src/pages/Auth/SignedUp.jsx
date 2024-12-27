@@ -18,14 +18,14 @@ function SignedUp() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    switch (true) {
-      case getCookie(config.validating) === AccountStatus.validating:
+    const cookie = getCookie(config.validating);
+    switch (cookie) {
+      case AccountStatus.validating:
         break;
-      case getCookie(config.validating) === AccountStatus.validated:
       default:
         return navigate("/");
     }
-  });
+  }, [navigate]);
 
   return (
     <div className="w-full h-screen flex items-center justify-center">
