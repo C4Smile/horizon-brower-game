@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
+import { createCookie } from "some-javascript-utils/browser";
 
 // components
 import Logo from "../../components/Logo/Logo";
@@ -14,6 +15,10 @@ import { useHorizonApiClient } from "../../providers/HorizonApiProvider";
 
 // pages
 import { findPath, pageId } from "../sitemap";
+
+// config
+import config from "../../config";
+import { AccountStatus } from "./SignedUp";
 
 /**
  * Sign Page
@@ -57,6 +62,7 @@ function SignUp() {
           const horizonUser = await request.json();
           if (horizonUser) logUser({ ...data, horizonUser });
           else logUser({ ...data });
+          createCookie(config.validating, 30, AccountStatus.validating);
           navigate(findPath(pageId.signedUp));
         }
       }
@@ -98,9 +104,9 @@ function SignUp() {
               <input
                 {...rest}
                 value={value ?? ""}
-                type=" password"
-                name=" password"
-                id=" password"
+                type="password"
+                name="password"
+                id="password"
                 required
               />
             )}
@@ -111,14 +117,14 @@ function SignUp() {
           <Controller
             control={control}
             disabled={saving}
-            name=" rPassword"
+            name="rPassword"
             render={({ field: { value, ...rest } }) => (
               <input
                 {...rest}
                 value={value ?? ""}
-                type=" password"
-                name=" rPassword"
-                id=" rPassword"
+                type="password"
+                name="rPassword"
+                id="rPassword"
                 required
               />
             )}
