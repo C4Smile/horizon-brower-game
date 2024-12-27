@@ -1,0 +1,347 @@
+{
+  "entities": {
+    "image": "Imagen",
+    "user": "Usuario",
+    "role": "Rol",
+    "building": "Edificio",
+    "buildingCosts": "Coste de Edificio",
+    "buildingProduces": "Producción de edificio",
+    "buildingReqTechs": "Requerimiento tecnológico",
+    "buildingReqBuildings": "Requerimiento de edificio",
+    "buildingType": "Tipo de Edificio",
+    "resource": "Recurso",
+    "tech": "Tecnología",
+    "techCosts": "Coste de Tecnología",
+    "techProduces": "Producción de tecnología",
+    "techReqTechs": "Requerimiento tecnológico",
+    "techReqBuildings": "Requerimiento de edificio",
+    "techType": "Tipo de Tecnología",
+    "skill": "Habilidad",
+    "ship": "Barco",
+    "shipCosts": "Coste de Barco",
+    "shipUpkeeps": "Manutención",
+    "shipReqTechs": "Requerimiento tecnológico",
+    "shipReqBuildings": "Requerimiento de edificio",
+    "cannon": "Cañón",
+    "cannonCosts": "Coste del cañón",
+    "cannonReqTechs": "Requerimiento tecnológico",
+    "cannonReqBuildings": "Requerimiento de edificio"
+  },
+  "base": {
+    "id": {
+      "label": "Id"
+    },
+    "lockedBy": {
+      "label": ""
+    },
+    "deleted": {
+      "label": "Eliminado"
+    },
+    "lastUpdate": {
+      "label": "Última actualización"
+    },
+    "dateOfCreation": {
+      "label": "Fecha de creación"
+    },
+    "factor": {
+      "label": "Factor",
+      "placeholder": "ej: 1.1"
+    },
+    "baseUpkeep": {
+      "label": "Manutención base",
+      "placeholder": "ej: 100"
+    },
+    "baseCost": {
+      "label": "Costo base",
+      "placeholder": "ej: 100"
+    },
+    "baseProduction": {
+      "label": "Producción base",
+      "placeholder": "ej: 100"
+    },
+    "techLevel": {
+      "label": "Nivel de investigación",
+      "placeholder": "ej: 1"
+    },
+    "buildingLevel": {
+      "label": "Nivel de edificio",
+      "placeholder": "ej: 1"
+    }
+  },
+  "roles": {
+    "admin": "Administrador",
+    "user": "Usuario"
+  },
+  "building": {
+    "name": {
+      "label": "Nombre",
+      "placeholder": "ej: Granja"
+    },
+    "image": {
+      "label": "Imagen"
+    },
+    "lastUpdate": {
+      "label": "Última actualización"
+    },
+    "description": {
+      "label": "Descripción",
+      "placeholder": "Alguna descripción"
+    },
+    "type": {
+      "label": "Tipo"
+    },
+    "creationTime": {
+      "label": "Tiempo de construcción",
+      "placeholder": "Se mide en días"
+    },
+    "resource": {
+      "cost": "Costo",
+      "upkeep": "Manutención",
+      "production": "Produce"
+    },
+    "tech": {
+      "req": "Requiere"
+    },
+    "building": {
+      "req": "Requiere"
+    }
+  },
+  "ship": {
+    "name": {
+      "label": "Nombre",
+      "placeholder": "ej: Goleta"
+    },
+    "image": {
+      "label": "Imagen"
+    },
+    "lastUpdate": {
+      "label": "Última actualización"
+    },
+    "description": {
+      "label": "Descripción",
+      "placeholder": "Alguna descripción"
+    },
+    "capacity": {
+      "label": "Capacidad de carga",
+      "placeholder": "En toneladas"
+    },
+    "knots": {
+      "label": "Velocidad base",
+      "placeholder": "En nudos"
+    },
+    "minCrew": {
+      "label": "Tripulación mín",
+      "placeholder": "Cantidad de hombres a bordo mínimo para navegar"
+    },
+    "bestCrew": {
+      "label": "Tripulación óptima",
+      "placeholder": "Cantidad de hombres a bordo óptima para navegar"
+    },
+    "maxCrew": {
+      "label": "Tripulación Mán",
+      "placeholder": "Cantidad de hombres a bordo máxima para navegar"
+    },
+    "creationTime": {
+      "label": "Tiempo de construcción",
+      "placeholder": "Se mide en días"
+    },
+    "guns": {
+      "label": "Capacidad de cañones",
+      "placeholder": "Ej: 10"
+    },
+    "hull": {
+      "label": "Puntos de casco",
+      "placeholder": "Ej: 300"
+    },
+    "resource": {
+      "cost": "Costo",
+      "upkeep": "Manutención"
+    },
+    "tech": {
+      "req": "Requiere"
+    },
+    "building": {
+      "req": "Requiere"
+    }
+  },
+  "cannon": {
+    "name": {
+      "label": "Nombre",
+      "placeholder": "ej: Cañón de 18 libras"
+    },
+    "image": {
+      "label": "Imagen"
+    },
+    "lastUpdate": {
+      "label": "Última actualización"
+    },
+    "description": {
+      "label": "Descripción",
+      "placeholder": "Alguna descripción"
+    },
+    "weight": {
+      "label": "Peso",
+      "placeholder": "En toneladas"
+    },
+    "baseDamage": {
+      "label": "Daño base",
+      "placeholder": "Ej: 100 puntos de casco"
+    },
+    "creationTime": {
+      "label": "Tiempo de construcción",
+      "placeholder": "Se mide en días"
+    },
+    "resource": {
+      "cost": "Costo"
+    },
+    "tech": {
+      "req": "Requiere"
+    },
+    "building": {
+      "req": "Requiere"
+    }
+  },
+  "buildingType": {
+    "name": {
+      "label": "Nombre",
+      "placeholder": "ej: Producción"
+    },
+    "image": {
+      "label": "Imagen"
+    },
+    "lastUpdate": {
+      "label": "Última actualización"
+    }
+  },
+  "resource": {
+    "name": {
+      "label": "Nombre",
+      "placeholder": "ej: Materiales"
+    },
+    "baseFactor": {
+      "label": "Factor base de producción",
+      "placeholder": "ej: 1"
+    },
+    "lastUpdate": {
+      "label": "Última actualización"
+    },
+    "description": {
+      "label": "Descripción",
+      "placeholder": "Alguna descripción"
+    },
+    "image": {
+      "label": "Imagen"
+    }
+  },
+  "skill": {
+    "name": {
+      "label": "Nombre",
+      "placeholder": "ej: Materiales"
+    },
+    "baseFactor": {
+      "label": "Factor base de producción",
+      "placeholder": "ej: 1"
+    },
+    "lastUpdate": {
+      "label": "Última actualización"
+    },
+    "description": {
+      "label": "Descripción",
+      "placeholder": "Alguna descripción"
+    },
+    "image": {
+      "label": "Imagen"
+    }
+  },
+  "tech": {
+    "name": {
+      "label": "Nombre",
+      "placeholder": "ej: Casco refinado"
+    },
+    "creationTime": {
+      "label": "Tiempo de investigación",
+      "placeholder": "Se mide en días"
+    },
+    "type": {
+      "label": "Tipo"
+    },
+    "lastUpdate": {
+      "label": "Última actualización"
+    },
+    "description": {
+      "label": "Descripción",
+      "placeholder": "Alguna descripción"
+    },
+    "image": {
+      "label": "Imagen"
+    },
+    "resource": {
+      "cost": "Costo",
+      "production": "Mejora de producción"
+    },
+    "tech": {
+      "req": "Requiere"
+    },
+    "building": {
+      "req": "Requiere"
+    }
+  },
+  "techType": {
+    "name": {
+      "label": "Nombre",
+      "placeholder": "ej: Mejora"
+    },
+    "image": {
+      "label": "Imagen"
+    },
+    "lastUpdate": {
+      "label": "Última actualización"
+    }
+  },
+  "user": {
+    "roleId": {
+      "label": "Rol"
+    },
+    "lastUpdate": {
+      "label": "Última actualización"
+    },
+    "username": {
+      "label": "Nombre de usuario",
+      "placeholder": "ej: juanperez"
+    },
+    "password": {
+      "label": "Contraseña",
+      "placeholder": "ej: *******"
+    },
+    "rPassword": {
+      "label": "Confirmar contraseña",
+      "placeholder": "ej: *******"
+    },
+    "name": {
+      "label": "Nombre",
+      "placeholder": "ej: Juan Pérez"
+    },
+    "email": {
+      "label": "Correo electrónico",
+      "placeholder": "ej: juanperez@gmail.com"
+    },
+    "phone": {
+      "label": "Teléfono",
+      "placeholder": "ej: +5352574839"
+    },
+    "address": {
+      "label": "Dirección",
+      "placeholder": "ej: Calle #57 % Calle y Calle"
+    },
+    "country": {
+      "label": "País"
+    },
+    "identification": {
+      "label": "Identificación",
+      "placeholder": "ej: A9012M"
+    },
+    "image": {
+      "label": "Foto de perfil"
+    }
+  }
+}

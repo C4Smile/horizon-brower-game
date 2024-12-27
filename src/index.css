@@ -1,3 +1,68 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.no-bg {
+    background: none !important;
+}
+
+input[type="file"] {
+    visibility: hidden;
+    position: absolute;
+}
+
+* {
+    font-family: "Poppins", sans-serif;
+}
+
+.segoe * {
+    font-family: "Segoe UI", sans-serif !important;
+}
+
+.poppins {
+    font-family: "Poppins", sans-serif !important;
+}
+
+a,
+button,
+p {
+    font-weight: 500;
+}
+
+h1,
+h2,
+h3 {
+    font-weight: 900;
+}
+
+.disabled-link {
+    pointer-events: none;
+}
+
+textarea {
+    resize: none;
+}
+
+.rotate {
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+input {
+    @apply border-2 border-solid border-black;
+}
+
+.submit {
+    position: relative;
+    padding: 6px 12px;
+    @apply border-2 border-solid border-black;
+}

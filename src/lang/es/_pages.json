@@ -1,0 +1,139 @@
+{
+  "common": {
+    "emptyEntityLevel": "Haz click en el botón para añadir elementos"
+  },
+  "routes": {
+    "dashboard": {
+      "link": "/"
+    },
+    "game": {
+      "link": "/game"
+    },
+    "players": {
+      "link": "/players"
+    },
+    "settings": {
+      "link": "/settings"
+    }
+  },
+  "home": {
+    "welcome": "Bienvenido"
+  },
+  "search": {
+    "label": "Buscar",
+    "placeholder": "Buscar algo...",
+    "recentSearches": "Búsquedas recientes",
+    "noRecentSearches": "No hay búsquedas recientes",
+    "recentPages": "Páginas recientes",
+    "noRecentPages": "Sin navegación reciente",
+    "result": "Resultados de búsqueda"
+  },
+  "auth": {
+    "recovery": {
+      "title": "Recuperación de contraseña",
+      "sent": "Revise su correo electrónico para restablecer su contraseña"
+    },
+    "updatePassword": {
+      "title": "Actualizar contraseña",
+      "sent": "La contraseña ha sido actualizada"
+    },
+    "signIn": {
+      "title": "Iniciar sesión",
+      "passwordRecovery": "¿Olvidó su contraseña?"
+    },
+    "signUp": {
+      "title": "Registrarse"
+    },
+    "signOut": {
+      "title": "Cerrar sesión"
+    }
+  },
+  "dashboard": {
+    "title": "Panel Administrativo",
+    "links": {
+      "main": "Principal",
+      "analytics": "Análisis"
+    }
+  },
+  "game": {
+    "title": "Juego",
+    "links": {
+      "ships": "Barcos",
+      "cannons": "Cañones",
+      "skills": "Habilidades",
+      "buildings": "Edificios",
+      "buildingTypes": "Tipos de Edificios",
+      "resources": "Recursos",
+      "techs": "Tecnologías",
+      "techTypes": "Tipos de Tecnologías"
+    }
+  },
+  "players": {
+    "title": "Jugadores",
+    "links": {
+      "users": "Usuarios"
+    }
+  },
+  "settings": {
+    "title": "Configuraciones",
+    "links": {
+      "account": "Cuenta",
+      "security": "Seguridad"
+    }
+  },
+  "buildings": {
+    "tabs": {
+      "general": "Información",
+      "produces": "Producción",
+      "costs": "Costo",
+      "upkeep": "Manutención",
+      "buildingReqTechs": "Requerimientos tecnológicos",
+      "buildingReqBuildings": "Requerimientos de edificios"
+    },
+    "newForm": "Nuevo edificio"
+  },
+  "ships": {
+    "tabs": {
+      "general": "Información",
+      "costs": "Costo",
+      "upkeep": "Manutención",
+      "shipReqTechs": "Requerimientos tecnológicos",
+      "shipReqBuildings": "Requerimientos de edificios"
+    },
+    "newForm": "Nuevo barco"
+  },
+  "cannons": {
+    "tabs": {
+      "general": "Información",
+      "costs": "Costo",
+      "cannonReqTechs": "Requerimientos tecnológicos",
+      "cannonReqBuildings": "Requerimientos de edificios"
+    },
+    "newForm": "Nuevo Cañón"
+  },
+  "buildingTypes": {
+    "newForm": "Nuevo tipo de edificio"
+  },
+  "resources": {
+    "newForm": "Nuevo recurso"
+  },
+  "skills": {
+    "newForm": "Nuevo habilidad"
+  },
+  "techs": {
+    "tabs": {
+      "general": "Información",
+      "produces": "Producción",
+      "costs": "Costo",
+      "techReqTechs": "Requerimientos tecnológicos",
+      "techReqBuildings": "Requerimientos de edificios"
+    },
+    "newForm": "Nuevo tecnología"
+  },
+  "techTypes": {
+    "newForm": "Nuevo tipo de tecnología"
+  },
+  "notFound": {
+    "title": "No encontrado"
+  }
+}

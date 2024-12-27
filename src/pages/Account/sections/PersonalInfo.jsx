@@ -1,0 +1,192 @@
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
+import { useForm, Controller } from "react-hook-form";
+import loadable from "@loadable/component";
+
+// components
+import Loading from "../../../partials/loading/Loading";
+
+// providers
+import { useNotification } from "../../../providers/NotificationProvider";
+import { useAccount } from "../../../providers/AccountProvider";
+import { queryClient, useHorizonApiClient } from "../../../providers/HorizonApiProvider";
+
+// utils
+import { ReactQueryKeys } from "../../../utils/queryKeys";
+
+// pages
+const NotFound = loadable(() => import("../../NotFound/NotFound"));
+
+/**
+ * PersonalInfo
+ * @returns PersonalInfo page Component
+ */
+function PersonalInfo() {
+  const { t } = useTranslation();
+
+  const { account } = useAccount();
+  const horizonApiClient = useHorizonApiClient();
+
+  const id = account?.horizonUser?.id;
+
+  const [notFound, setNotFound] = useState(false);
+
+  const { setNotification } = useNotification();
+  const [saving, setSaving] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState();
+
+  const { handleSubmit, reset, control } = useForm();
+
+  const [photo, setPhoto] = useState();
+
+  const onSubmit = async (d) => {
+    if (!photo) {
+      setNotification("images", {}, "bad");
+      return;
+    }
+
+    setSaving(true);
+    try {
+      const result = await horizonApiClient.User.update(d, photo);
+      const { error, status } = result;
+
+      setNotification(String(status), { model: t("_entities:entities.user") });
+      setLastUpdate(new Date().toDateString());
+      if (error) console.error(error.message);
+      else await queryClient.invalidateQueries({ queryKey: [ReactQueryKeys.Users, id] });
+    } catch (e) {
+      console.error(e);
+      setNotification(String(e.status), { model: t("_entities:entities.user") });
+    }
+    setSaving(false);
+  };
+
+  const userQuery = useQuery({
+    queryKey: [ReactQueryKeys.Users, id],
+    queryFn: () => horizonApiClient.User.getById(id),
+    enabled: id !== undefined
+  });
+
+  useEffect(() => {
+    const { data } = userQuery;
+    if (data && data.error) console.error(data.error.message);
+    if (data?.status === 404) setNotFound(true);
+  }, [userQuery]);
+
+  useEffect(() => {
+    if (userQuery.data) {
+      if (userQuery.data?.image) setPhoto(userQuery?.data?.image);
+      reset({ ...userQuery.data });
+      setLastUpdate(userQuery?.data?.lastUpdate);
+    }
+
+    if (!id) {
+      setPhoto();
+      reset({
+        id: undefined,
+        username: "",
+        password: "",
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+        identification: ""
+      });
+    }
+  }, [id, reset, userQuery.data]);
+
+  return notFound ? (
+    <NotFound />
+  ) : (
+    <form onSubmit={handleSubmit(onSubmit)} className="form">
+      <h2 className="text-1xl md:text-2xl font-bold">{t("_pages:settings.links.account")}</h2>
+      {userQuery.isLoading ? (
+        <Loading
+          className="bg-none w-6 h-6 mb-10"
+          strokeWidth="4"
+          loaderClass="!w-6"
+          color="stroke-primary"
+        />
+      ) : (
+        <div className={id && lastUpdate ? "" : "mt-5"}>
+          {id && lastUpdate && (
+            <p className="text-sm mb-10">
+              {t("_accessibility:labels.lastUpdate")} {new Date(lastUpdate).toLocaleDateString("es-ES")}
+            </p>
+          )}
+        </div>
+      )}
+      <div>
+        <label>
+          {t("_entities:user.name.label")}
+        </label>
+        {/* User Name */}
+        <Controller
+          control={control}
+          disabled={userQuery.isLoading || saving}
+          name="name"
+          render={({ field }) => (
+            <input
+              {...field}
+              type="text"
+              name="name"
+              id="name"
+              placeholder={t("_entities:user.name.placeholder")}
+              required
+            />
+          )}
+        />
+      </div>
+
+      <div>
+        <label>
+          {t("_entities:user.email.label")}
+        </label>
+        {/* User Email */}
+        <Controller
+          control={control}
+          name="email"
+          disabled={userQuery.isLoading || saving}
+          render={({ field }) => (
+            <input
+              {...field}
+              type="email"
+              name="email"
+              id="email"
+              placeholder={t("_entities:user.email.placeholder")}
+              required
+            />
+          )}
+        />
+      </div>
+      <div>
+        <label>{t("_entities:user.username.label")}</label>
+        {/* User Username */}
+        <Controller
+          control={control}
+          disabled={userQuery.isLoading || saving}
+          name="username"
+          render={({ field }) => (
+            <input
+              {...field}
+              type="text"
+              name="username"
+              id="username"
+              placeholder={t("_entities:user.username.placeholder")}
+              required
+            />
+          )}
+        />
+      </div>
+      <button type="submit" disabled={userQuery.isLoading || saving} className="mb-5 submit">
+        {(userQuery.isLoading || saving) && (
+          <Loading className="button-loading" strokeWidth="4" loaderClass="!w-6" color="stroke-white" />
+        )}
+        {t("_accessibility:buttons.save")}
+      </button>
+    </form>
+  );
+}
+
+export default PersonalInfo;
