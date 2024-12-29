@@ -78,6 +78,16 @@ export class UserApiClient extends BaseApiClient {
   }
 
   /**
+   * Validates an email with a token
+   * @param {string} token
+   * @returns refreshed token
+   */
+  async validateEmail(token) {
+    const { data, error, status } = await makeRequest(`auth/email-validation`, "POST", { token });
+    return { data, status: error?.status ?? status, error };
+  }
+
+  /**
    * Get session
    * @returns the current session
    */

@@ -9,7 +9,6 @@ import Logo from "../../components/Logo/Logo";
 import Loading from "../../partials/loading/Loading";
 
 // providers
-import { useAccount } from "../../providers/AccountProvider";
 import { useNotification } from "../../providers/NotificationProvider";
 import { useHorizonApiClient } from "../../providers/HorizonApiProvider";
 
@@ -28,8 +27,6 @@ function SignUp() {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
-
-  const { logUser } = useAccount();
 
   const horizonApiClient = useHorizonApiClient();
 
@@ -58,10 +55,6 @@ function SignUp() {
         if (data.status === 409)
           setUserError(t(`_accessibility:messages.409`, { model: t("_entities:entities.user") }));
         else {
-          const request = await horizonApiClient.User.fetchOwner(data.user.id);
-          const horizonUser = await request.json();
-          if (horizonUser) logUser({ ...data, horizonUser });
-          else logUser({ ...data });
           createCookie(config.validating, 30, AccountStatus.validating);
           navigate(findPath(pageId.signedUp));
         }
