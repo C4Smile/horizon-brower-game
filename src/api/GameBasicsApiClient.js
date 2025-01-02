@@ -8,18 +8,16 @@ import { fromLocal, toLocal } from "../utils/local";
 import config from "../config.js";
 
 export class GameBasicsApiClient {
-  constructor() {
-
-  }
+  constructor() {}
 
   /**
    * @description Get game data
    * @returns {Promise<object[]> | object} Result list
    */
-  async gameData() {
-    const { data, error, status } = await makeRequest(
-      `game?hash=${fromLocal(config.hash) ?? ""}`
-    );
+  async gameData(userId) {
+    const { data, error, status } = await makeRequest(`game/${userId}`, "GET", null, {
+      Authorization: "Bearer " + fromLocal(config.user, "object")?.token,
+    });
     if (error !== null) return { status, error: { message: error.message } };
 
     // saving game data
