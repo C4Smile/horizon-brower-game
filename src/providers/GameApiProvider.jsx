@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 // providers
@@ -33,6 +33,12 @@ const GameProvider = (props) => {
   });
 
   const gameData = useMemo(() => gameDataQuery.data ?? {}, [gameDataQuery.data]);
+
+  useEffect(() => {
+    if (gameData.resources) {
+      horizonApiClient.Resource.gameResources = gameData.resources;
+    }
+  }, [gameData, horizonApiClient]);
 
   return <GameClientContext.Provider value={{ ...gameData }}>{children}</GameClientContext.Provider>;
 };
