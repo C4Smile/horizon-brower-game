@@ -62,8 +62,6 @@ export const App = () => {
     return routes;
   }, [userRole]);
 
-  console.log(routes);
-
   return (
     <>
       <SplashScreen visible={loaded} />
