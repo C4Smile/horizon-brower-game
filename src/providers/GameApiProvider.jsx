@@ -27,8 +27,8 @@ const GameProvider = (props) => {
   const { account } = useAccount();
 
   const gameDataQuery = useQuery({
-    queryFn: () => horizonApiClient.GameBasics.gameData(),
-    queryKey: [ReactQueryKeys.GameData, fromLocal(config.hash)],
+    queryFn: () => horizonApiClient.GameBasics.gameData(account?.user?.id),
+    queryKey: [ReactQueryKeys.GameData, account?.user?.id],
     enabled: !!account?.user?.id,
   });
 
