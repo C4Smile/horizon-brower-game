@@ -76,7 +76,9 @@ function SignIn() {
             control={control}
             disabled={saving}
             name="email"
-            render={({ field }) => <input {...field} type="text" name="email" id="email" required />}
+            render={({ field: { value, ...rest } }) => (
+              <input {...rest} value={value ?? ""} type="text" name="email" id="email" required />
+            )}
           />
           <p className="text-error">{userError}</p>
         </div>
@@ -86,8 +88,15 @@ function SignIn() {
             control={control}
             disabled={saving}
             name="password"
-            render={({ field }) => (
-              <input {...field} type="password" name="password" id="password" required />
+            render={({ field: { value, ...rest } }) => (
+              <input
+                {...rest}
+                value={value ?? ""}
+                type="password"
+                name="password"
+                id="password"
+                required
+              />
             )}
           />
           <p className="text-error">{passwordError}</p>
