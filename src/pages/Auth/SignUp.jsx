@@ -55,7 +55,7 @@ function SignUp() {
         if (data.status === 409)
           setUserError(t(`_accessibility:messages.409`, { model: t("_entities:entities.user") }));
         else {
-          createCookie(config.validating, 30, AccountStatus.validating);
+          createCookie(config.validating, 1, AccountStatus.validating);
           navigate(findPath(pageId.signedUp));
         }
       }

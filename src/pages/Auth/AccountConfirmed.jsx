@@ -2,14 +2,18 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { getCookie, createCookie } from "some-javascript-utils/browser";
+
+// types
 import { AccountStatus } from "./SignedUp";
 
 // provider
 import { useHorizonApiClient } from "../../providers/HorizonApiProvider";
 
+// components
+import Loading from "../../partials/loading/Loading";
+
 // config
 import config from "../../config";
-import Loading from "../../partials/loading/Loading";
 
 function AccountConfirmed() {
   const horizonApiClient = useHorizonApiClient();
@@ -58,16 +62,18 @@ function AccountConfirmed() {
           <Loading color="stroke-light-primary" />
         ) : (
           <>
-            <h1 className="text-light-primary text-3xl text-center">
-              {t("_pages:auth.accountConfirmed.title")}
-            </h1>
-            <p className="max-w-64 text-center text-white">
-              {t(
-                validated
-                  ? "_pages:auth.accountConfirmed.body"
-                  : "_accessibility:messages.notValidated",
-              )}
-            </p>
+            {validated ? (
+              <>
+                <h1 className="text-light-primary text-3xl text-center">
+                  {t("_pages:auth.accountConfirmed.title")}
+                </h1>
+                <p className="max-w-64 text-center text-white">
+                  {t("_pages:auth.accountConfirmed.body")}
+                </p>
+              </>
+            ) : (
+              <p className="max-w-64 text-center text-error">{t("_accessibility:messages.notValidated")}</p>
+            )}
             <Link to="/auth" className="submit text-light-primary !border-light-primary">
               {t(validate ? "_pages:auth.accountConfirmed.start" : "_accessibility:buttons.goHome")}
             </Link>
