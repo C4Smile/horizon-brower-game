@@ -1,5 +1,8 @@
-import { Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom"
+
+// components
 import Resources from "./components/Resources/Resources.jsx";
+import Actions from "./components/Actions/Actions.jsx";
 
 const Game = () => {
   return (
