@@ -14,7 +14,7 @@ const Resource = (props) => {
   const resourceData = useMemo(() => resources?.find((res) => res.id === resourceId), [resources, resourceId]);
 
   return (<div className="flex flex-col items-center justify-center">
-    <img className="w-8 h-8 rounded-full" src={staticUrlPhoto(resourceData?.image)} alt={resourceData?.name} />
+    <img className="w-8 h-8 rounded-full object-cover" src={staticUrlPhoto(resourceData?.image ?? "")} alt={resourceData?.name} />
     <p className="text-light-primary">{inStock}</p>
   </div>);
 };
