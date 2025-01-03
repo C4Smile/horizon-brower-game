@@ -51,8 +51,6 @@ function Resources() {
     }
   }, [resources]);
 
-  console.log(resources);
-
   return <ul className="flex gap-3 bg-dark py-2 rounded-2xl px-4">
     {!myResourcesQuery.isPending ? resources?.map((resource) => (
       <li key={resource.id}>
