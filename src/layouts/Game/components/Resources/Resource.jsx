@@ -2,8 +2,8 @@ import Tippy from "@tippyjs/react";
 import { memo, useMemo } from "react";
 
 // providers
-import { useGame } from "../../../providers/GameApiProvider.jsx";
-import { staticUrlPhoto } from "../../../utils/utils.js";
+import { useGame } from "../../../../providers/GameApiProvider.jsx";
+import { staticUrlPhoto } from "../../../../utils/utils.js";
 
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -16,7 +16,7 @@ const Resource = (props) => {
   const resourceData = useMemo(() => resources?.find((res) => res.id === resourceId), [resources, resourceId]);
 
   const tooltip = useMemo(() => {
-    return `${resourceData?.name ?? ""} ${inStock} / ${maxCapacity}`
+    return `${resourceData?.name ?? ""} ${inStock} / ${maxCapacity}`;
   }, [inStock, maxCapacity, resourceData]);
 
   return (

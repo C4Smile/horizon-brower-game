@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 // providers
-import { useHorizonApiClient } from "../../../providers/HorizonApiProvider";
-import { useAccount } from "../../../providers/AccountProvider";
+import { useHorizonApiClient } from "../../../../providers/HorizonApiProvider.jsx";
+import { useAccount } from "../../../../providers/AccountProvider.jsx";
 
 // utils
-import { ReactQueryKeys } from "../../../utils/queryKeys.js";
+import { ReactQueryKeys } from "../../../../utils/queryKeys.js";
 
 // components
 import Resource from "./Resource.jsx";
