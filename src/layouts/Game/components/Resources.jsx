@@ -41,7 +41,7 @@ function Resources() {
       const interval = setInterval(() => {
         setResources(resources?.map((res) => ({
           ...res,
-          inStock: res.inStock + res.currentFactor
+          inStock: res.inStock < res.maxCapacity ? res.inStock + res.currentFactor : res.inStock
         })));
       }, 3000);
 
@@ -51,7 +51,7 @@ function Resources() {
     }
   }, [resources]);
 
-  return <ul className="flex gap-3 bg-dark py-2 rounded-2xl px-4">
+  return <ul className="flex gap-3 bg-dark pb-1 pt-2 px-4  rounded-2xl">
     {!myResourcesQuery.isPending ? resources?.map((resource) => (
       <li key={resource.id}>
         <Resource {...resource} />
