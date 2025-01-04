@@ -1,0 +1,28 @@
+{
+  "actions": {
+    "buildings": {
+      "name": "Construir",
+      "id": 0,
+      "tooltip": "Abre el panel para construir edificios.",
+      "aria": "Abrir el diálogo para construir"
+    },
+    "ships": {
+      "name": "Astillero",
+      "id": 1,
+      "tooltip": "Accede al astillero para construir y reparar barcos.",
+      "aria": "Abrir el diálogo para astillero"
+    },
+    "techs": {
+      "name": "Academia",
+      "id": 2,
+      "tooltip": "Accede a la academia para investigar nuevas tecnologías.",
+      "aria": "Abrir el diálogo para la academia"
+    },
+    "guns": {
+      "name": "Forja",
+      "id": 3,
+      "tooltip": "Accede a la forja para crear armas.",
+      "aria": "Abrir el diálogo para la forja"
+    }
+  }
+}

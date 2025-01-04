@@ -1,5 +1,7 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { sortBy } from "some-javascript-utils/Array";
 
 // providers
 import { useHorizonApiClient } from "../../../../providers/HorizonApiProvider.jsx";
@@ -15,7 +17,7 @@ export const ResourcesEnum = {
   Materials: 1,
   Supplies: 2,
   Coins: 3,
-  People: 4
+  People: 4,
 };
 
 function Resources() {
@@ -24,25 +26,25 @@ function Resources() {
 
   const [resources, setResources] = useState([]);
 
-  const myResourcesQuery = useQuery(({
+  const myResourcesQuery = useQuery({
     queryFn: () => horizonApiClient.Resource.geyMyResources(account?.user?.id),
     queryKey: [ReactQueryKeys.Resources, account?.user?.id],
-    enabled: !!account?.user?.id
-
-  }));
+    enabled: !!account?.user?.id,
+  });
 
   useEffect(() => {
-    if (myResourcesQuery?.data)
-      setResources([...myResourcesQuery.data]);
+    if (myResourcesQuery?.data) setResources([...myResourcesQuery.data]);
   }, [myResourcesQuery?.data]);
 
   useEffect(() => {
     if (resources.length) {
       const interval = setInterval(() => {
-        setResources(resources?.map((res) => ({
-          ...res,
-          inStock: res.inStock < res.maxCapacity ? res.inStock + res.currentFactor : res.inStock
-        })));
+        setResources(
+          resources?.map((res) => ({
+            ...res,
+            inStock: res.inStock < res.maxCapacity ? res.inStock + res.currentFactor : res.inStock,
+          })),
+        );
       }, 3000);
 
       return () => {
@@ -51,13 +53,17 @@ function Resources() {
     }
   }, [resources]);
 
-  return <ul className="flex gap-3 bg-dark pb-1 pt-2 px-4  rounded-2xl">
-    {!myResourcesQuery.isPending ? resources?.map((resource) => (
-      <li key={resource.id}>
-        <Resource {...resource} />
-      </li>
-    )) : null}
-  </ul>;
+  return (
+    <ul className="flex gap-3 bg-dark pb-1 pt-2 px-4 rounded-lg">
+      {!myResourcesQuery.isPending
+        ? sortBy(resources, "resourceId", true)?.map((resource) => (
+            <li key={resource.id}>
+              <Resource {...resource} />
+            </li>
+          ))
+        : null}
+    </ul>
+  );
 }
 
 export default Resources;

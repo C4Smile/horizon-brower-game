@@ -26,7 +26,7 @@ const Resource = (props) => {
     <Tippy content={tooltip}>
       <div className="flex flex-col items-center justify-center">
         <img
-          className="w-8 h-8 rounded-full object-cover"
+          className="w-8 h-8 rounded-lg object-cover"
           src={staticUrlPhoto(resourceData?.image ?? "")}
           alt={resourceData?.name}
         />

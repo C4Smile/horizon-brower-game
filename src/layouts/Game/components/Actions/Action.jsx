@@ -12,7 +12,7 @@ const Action = (props) => {
         aria-label={aria}
         className="flex flex-col items-center justify-center"
       >
-        <img className="w-8 h-8 rounded-full object-cover" src={image} alt={name} />
+        <img className="w-8 h-8 rounded-lg object-cover" src={image} alt={name} />
       </button>
     </Tippy>
   );

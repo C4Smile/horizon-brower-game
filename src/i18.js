@@ -8,6 +8,7 @@ import { namespaces } from "./lang/nameSpaces";
 import esAccessibility from "./lang/es/_accessibility.json";
 import esEntities from "./lang/es/_entities.json";
 import esPages from "./lang/es/_pages.json";
+import esGame from "./lang/es/_game.json";
 
 i18n
   // detect user language
@@ -27,6 +28,7 @@ i18n
         _accessibility: esAccessibility,
         _pages: esPages,
         _entities: esEntities,
+        _game: esGame,
       },
     },
   });
