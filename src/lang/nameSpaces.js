@@ -1,1 +1,1 @@
-export const namespaces = ["_accessibility", "_pages", "_entities"];
+export const namespaces = ["_game", "_accessibility", "_pages", "_entities"];
