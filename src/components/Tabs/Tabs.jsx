@@ -16,7 +16,7 @@ function Tabs(props) {
             aria-label={t("_accessibility:buttons.openTab.aria", { tab: tab.name })}
             name={tab.name}
             onClick={(e) => onChange(e, tab.id)}
-            className={currentTab === tab.id ? "text-light-primary" : "text-primary"}
+            className={currentTab === tab.id ? "text-light-primary" : "text-white"}
           >
             {tab.name}
           </button>

@@ -6,6 +6,8 @@ import { memo, useMemo } from "react";
 
 // providers
 import { useGame } from "../../../../providers/GameApiProvider.jsx";
+
+// utils
 import { staticUrlPhoto } from "../../../../utils/utils.js";
 
 const Resource = (props) => {

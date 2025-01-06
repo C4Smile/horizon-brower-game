@@ -1,5 +1,8 @@
-// components
 import { useMemo } from "react";
+
+// icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 // components
 import Dialog from "../../../../components/Dialogs/Dialog/Dialog";
@@ -40,7 +43,19 @@ function ActionPanel() {
 
   return (
     <Dialog show={showPanel !== null} onClose={onClose} hideCloseButton>
-      {dialog}
+      <section
+        id={`${dialog}-panel`}
+        className="relative p-4 rounded-lg bg-ocean min-w-[350px] max-w-[600px] min-h-[400px]"
+      >
+        <button
+          type="button"
+          className="right-3 top-3 absolute text-xl text-light-primary hover:text-error"
+          onClick={onClose}
+        >
+          <FontAwesomeIcon icon={faClose} />
+        </button>
+        {dialog}
+      </section>
     </Dialog>
   );
 }

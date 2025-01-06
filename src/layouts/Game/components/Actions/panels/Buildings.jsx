@@ -11,7 +11,6 @@ import { useAccount } from "../../../../../providers/AccountProvider";
 import { ReactQueryKeys } from "../../../../../utils/queryKeys";
 
 // components
-import TabComponent from "../../../../../components/Tabs/TabComponent";
 import Tabs from "../../../../../components/Tabs/Tabs";
 import PanelCard from "../../../../../components/PanelCard/PanelCard";
 
@@ -32,17 +31,15 @@ function Buildings() {
 
   const [currentTab, setCurrentTab] = useState(1);
 
-  console.log(buildingTypes);
-
   return (
-    <section id="building-panel" className="p-4 rounded-lg bg-ocean min-w-[500px] min-h-[400px]">
-      <h3 className="text-light-primary text-3xl">{t("_game:buildings.title")}</h3>
+    <>
+      <h3 className="text-light-primary text-3xl mb-3">{t("_game:buildings.title")}</h3>
       <Tabs
         currentTab={currentTab}
         onChange={(_, value) => setCurrentTab(value)}
         tabs={buildingTypes.map(({ id, name, image }) => ({ id, name, image }))}
       />
-      <ul>
+      <ul className="flex flex-col gap-5 mt-5">
         {buildings
           .filter((b) => b.typeId === currentTab)
           .map((b) => (
@@ -51,7 +48,7 @@ function Buildings() {
             </li>
           ))}
       </ul>
-    </section>
+    </>
   );
 }
 
