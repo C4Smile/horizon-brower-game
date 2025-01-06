@@ -12,6 +12,8 @@ import { ReactQueryKeys } from "../../../../../utils/queryKeys";
 
 // components
 import TabComponent from "../../../../../components/Tabs/TabComponent";
+import Tabs from "../../../../../components/Tabs/Tabs";
+import PanelCard from "../../../../../components/PanelCard/PanelCard";
 
 function Buildings() {
   const { t } = useTranslation();
@@ -33,14 +35,22 @@ function Buildings() {
   console.log(buildingTypes);
 
   return (
-    <section id="building-panel" className="p-4 rounded-lg bg-ocean min-w-[500px]">
+    <section id="building-panel" className="p-4 rounded-lg bg-ocean min-w-[500px] min-h-[400px]">
       <h3 className="text-light-primary text-3xl">{t("_game:buildings.title")}</h3>
-      <TabComponent
+      <Tabs
         currentTab={currentTab}
         onChange={(_, value) => setCurrentTab(value)}
         tabs={buildingTypes.map(({ id, name, image }) => ({ id, name, image }))}
-        content={buildings.filter((b) => b.typeId === currentTab)}
       />
+      <ul>
+        {buildings
+          .filter((b) => b.typeId === currentTab)
+          .map((b) => (
+            <li key={b.id}>
+              <PanelCard {...b} />
+            </li>
+          ))}
+      </ul>
     </section>
   );
 }
