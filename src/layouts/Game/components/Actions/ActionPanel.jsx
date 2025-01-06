@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 // icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -26,7 +26,18 @@ const Actions = {
 function ActionPanel() {
   const { showPanel, setShowPanel } = useActionPanel();
 
-  const onClose = () => setShowPanel(null);
+  const [openDialog, setOpenDialog] = useState(false);
+
+  useEffect(() => {
+    if (showPanel) setOpenDialog(true);
+  }, [showPanel]);
+
+  const onClose = () => {
+    setOpenDialog(false);
+    setTimeout(() => {
+      setShowPanel(null);
+    }, 400);
+  };
 
   const dialog = useMemo(() => {
     switch (showPanel) {
@@ -42,7 +53,7 @@ function ActionPanel() {
   }, [showPanel]);
 
   return (
-    <Dialog show={showPanel !== null} onClose={onClose} hideCloseButton>
+    <Dialog show={openDialog} onClose={onClose} hideCloseButton>
       <section
         id={`${dialog}-panel`}
         className="relative p-4 rounded-lg bg-ocean min-w-[350px] max-w-[600px] min-h-[400px]"
