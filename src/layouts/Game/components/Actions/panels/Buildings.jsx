@@ -1,6 +1,10 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
+
+// icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHammer } from "@fortawesome/free-solid-svg-icons";
 
 // providers
 import { useHorizonApiClient } from "../../../../../providers/HorizonApiProvider";
@@ -31,6 +35,10 @@ function Buildings() {
 
   const [currentTab, setCurrentTab] = useState(1);
 
+  const actionText = useCallback((id) => {}, [playerBuildings]);
+
+  const onClick = useCallback((id) => {}, [playerBuildings]);
+
   return (
     <>
       <h3 className="text-light-primary text-3xl mb-3">{t("_game:buildings.title")}</h3>
@@ -44,7 +52,7 @@ function Buildings() {
           .filter((b) => b.typeId === currentTab)
           .map((b) => (
             <li key={b.id}>
-              <PanelCard {...b} />
+              <PanelCard {...b} action={actionText(b.id)} onClick={(_, id) => onClick(id)} />
             </li>
           ))}
       </ul>
