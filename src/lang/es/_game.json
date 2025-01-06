@@ -24,5 +24,8 @@
       "tooltip": "Accede a la forja para crear armas.",
       "aria": "Abrir el diálogo para la forja"
     }
+  },
+  "buildings": {
+    "title": "Edificios"
   }
 }

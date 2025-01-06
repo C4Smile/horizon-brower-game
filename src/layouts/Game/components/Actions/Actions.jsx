@@ -18,7 +18,7 @@ const Actions = () => {
 
   const parsedActions = useMemo(() => {
     return actions.map((action, i) => ({
-      id: t(`_game:actions.${action}.id`),
+      id: action,
       name: t(`_game:actions.${action}.name`),
       tooltip: t(`_game:actions.${action}.name`),
       aria: t(`_game:actions.${action}.aria`),

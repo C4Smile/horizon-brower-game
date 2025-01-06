@@ -1,14 +1,20 @@
 /* eslint-disable react/prop-types */
 import Tippy from "@tippyjs/react";
 
+// provider
+import { useActionPanel } from "../../../../providers/ActionPanelProvider";
+
 const Action = (props) => {
   const { image, tooltip, name, aria, id } = props;
+
+  const { setShowPanel } = useActionPanel();
 
   return (
     <Tippy content={tooltip}>
       <button
         id={id}
         type="button"
+        onClick={() => setShowPanel(id)}
         aria-label={aria}
         className="flex flex-col items-center justify-center"
       >

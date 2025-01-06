@@ -26,6 +26,9 @@
   },
   "appName": "Horizon dashboard",
   "buttons": {
+    "openTab": {
+      "aria": "Abrir tab {{tab}}"
+    },
     "expandSidebar": "Abrir / cerrar barra lateral",
     "goHome": "Inicio",
     "settings": "Configuración",
