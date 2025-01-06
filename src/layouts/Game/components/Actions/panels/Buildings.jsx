@@ -25,9 +25,9 @@ function Buildings() {
   const { account } = useAccount();
 
   const playerBuildings = useQuery({
-    queryFn: () => horizonApiClient.Building.getMyBuildings(account?.user?.id),
-    queryKey: [ReactQueryKeys.Buildings, account?.user?.id],
-    enabled: !!account?.user?.id,
+    queryFn: () => horizonApiClient.Building.getMyBuildings(account?.horizonUser?.id),
+    queryKey: [ReactQueryKeys.Buildings, account?.horizonUser?.id],
+    enabled: !!account?.horizonUser?.id,
   });
 
   const [currentTab, setCurrentTab] = useState(1);

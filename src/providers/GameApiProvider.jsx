@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 // providers
-import { useHorizonApiClient } from "./HorizonApiProvider.jsx";
+import { queryClient, useHorizonApiClient } from "./HorizonApiProvider.jsx";
 import { useAccount } from "./AccountProvider.jsx";
 
 // utils
@@ -27,9 +27,9 @@ const GameProvider = (props) => {
   const { account } = useAccount();
 
   const gameDataQuery = useQuery({
-    queryFn: () => horizonApiClient.GameBasics.gameData(account?.user?.id),
-    queryKey: [ReactQueryKeys.GameData, account?.user?.id],
-    enabled: !!account?.user?.id,
+    queryFn: () => horizonApiClient.GameBasics.gameData(account?.horizonUser?.id),
+    queryKey: [ReactQueryKeys.GameData, account?.horizonUser?.id],
+    enabled: !!account?.horizonUser?.id,
   });
 
   const gameData = useMemo(() => gameDataQuery.data ?? {}, [gameDataQuery.data]);
@@ -37,8 +37,9 @@ const GameProvider = (props) => {
   useEffect(() => {
     if (gameData.resources) {
       horizonApiClient.Resource.gameResources = gameData.resources;
+      queryClient.invalidateQueries([ReactQueryKeys.Resources, account?.horizonUser?.id]);
     }
-  }, [gameData, horizonApiClient]);
+  }, [account?.horizonUser?.id, gameData, horizonApiClient]);
 
   return <GameClientContext.Provider value={{ ...gameData }}>{children}</GameClientContext.Provider>;
 };
