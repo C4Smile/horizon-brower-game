@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 // components
-import Action from "./Action";
+import Action from "./ToolbarAction";
 
 // images
 import buildings from "../../../../assets/images/buildings.png";

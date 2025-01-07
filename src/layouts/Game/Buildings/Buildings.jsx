@@ -6,19 +6,18 @@ import { useTranslation } from "react-i18next";
 import { faDownLong, faHammer, faTrash, faUpLong } from "@fortawesome/free-solid-svg-icons";
 
 // providers
-import { useHorizonApiClient } from "../../../../providers/HorizonApiProvider";
-import { useGame } from "../../../../providers/GameApiProvider";
-import { useAccount } from "../../../../providers/AccountProvider";
+import { useHorizonApiClient } from "../../../providers/HorizonApiProvider";
+import { useGame } from "../../../providers/GameApiProvider";
+import { useAccount } from "../../../providers/AccountProvider";
 
 // utils
-import { ReactQueryKeys } from "../../../../utils/queryKeys";
+import { ReactQueryKeys } from "../../../utils/queryKeys";
 
 // components
-import Tabs from "../../../../components/Tabs/Tabs";
-import PanelCard from "../../../../components/PanelCard/PanelCard";
+import Tabs from "../../../components/Tabs/Tabs";
+import PanelCard from "../../../components/PanelCard/PanelCard";
 
 // api
-import { BuildingQueueActions, BuildingQueueState } from "../../../../api/BuildingApiClient";
 import { useBuildAction } from "./actions/useBuild";
 
 function Buildings() {
@@ -37,8 +36,8 @@ function Buildings() {
   });
 
   const playerQueue = useQuery({
-    queryKey: () => horizonApiClient.Building.getMyQueue(account?.horizonUser?.id),
-    queryFn: [ReactQueryKeys.BuildingsQueue, account?.horizonUser?.id],
+    queryFn: () => horizonApiClient.Building.getMyQueue(account?.horizonUser?.id),
+    queryKey: [ReactQueryKeys.BuildingsQueue, account?.horizonUser?.id],
     enabled: !!account?.horizonUser?.id,
   });
 
@@ -65,7 +64,7 @@ function Buildings() {
           .filter((b) => b.typeId === currentTab)
           .map((b) => (
             <li key={b.id}>
-              <PanelCard {...b} actions={actions} />
+              <PanelCard {...b} actions={actions(b)} />
             </li>
           ))}
       </ul>

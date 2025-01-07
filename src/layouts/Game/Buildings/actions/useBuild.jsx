@@ -7,10 +7,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHammer, faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 // providers
-import { useHorizonApiClient } from "../../../../../providers/HorizonApiProvider";
+import { queryClient, useHorizonApiClient } from "../../../../providers/HorizonApiProvider";
 
 // actions
-import { BuildingQueueActions } from "../../../../../api/BuildingApiClient";
+import { BuildingQueueActions } from "../../../../api/BuildingApiClient";
+
+// utils
+import { ReactQueryKeys } from "../../../../utils/queryKeys";
 
 export const useBuildAction = (props) => {
   const { t } = useTranslation();
@@ -28,9 +31,11 @@ export const useBuildAction = (props) => {
       }),
     onSuccess: async (result) => {
       const { error, status } = result;
-      if (status !== 200) {
+
+      if (status !== 201) {
         console.error(error);
       } else {
+        queryClient.invalidateQueries([ReactQueryKeys.Buildings, userId]);
         console.info(200);
       }
     },
@@ -50,9 +55,15 @@ export const useBuildAction = (props) => {
           setItemId(row.id);
           toBuild.mutate({ buildingId: row.id });
         },
-        hidden: currentBuildings?.find((b) => b.id === row.id),
-        icon: <FontAwesomeIcon icon={isLoading ? faSpinner : faHammer} />,
+        hidden: currentBuildings?.find((b) => b.buildingId === row.id),
+        icon: (
+          <FontAwesomeIcon
+            className="text-xl text-light-primary"
+            icon={isLoading ? faSpinner : faHammer}
+          />
+        ),
         tooltip: t("_game:buildings.actions.build.label"),
+        aria: t("_game:buildings.actions.build.aria"),
       };
     },
     [currentBuildings, itemId, t, toBuild],

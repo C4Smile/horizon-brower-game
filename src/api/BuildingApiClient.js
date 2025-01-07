@@ -55,9 +55,14 @@ export class BuildingApiClient extends BaseApiClient {
   }
 
   async getMyQueue(userId) {
-    const { data, error, status } = await makeRequest(`${this.baseUrl}/queue/player/${userId}`, "GET", null, {
-      Authorization: "Bearer " + fromLocal(config.user, "object")?.token,
-    });
+    const { data, error, status } = await makeRequest(
+      `${this.baseUrl}/queue/player/${userId}`,
+      "GET",
+      null,
+      {
+        Authorization: "Bearer " + fromLocal(config.user, "object")?.token,
+      },
+    );
     if (error !== null) return { status, error: { message: error.message } };
 
     return data;
@@ -68,6 +73,6 @@ export class BuildingApiClient extends BaseApiClient {
       Authorization: "Bearer " + fromLocal(config.user, "object")?.token,
     });
 
-    return data, error, status;
+    return { data, error, status };
   }
 }

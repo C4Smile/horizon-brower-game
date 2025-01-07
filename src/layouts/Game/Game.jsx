@@ -1,13 +1,15 @@
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 // providers
 import { useAccount } from "../../providers/AccountProvider.jsx";
 
-// components
-import ActionPanel from "./components/Actions/ActionPanel.jsx";
+// sections
 import Header from "./components/Header.jsx";
 import Footer from "./components/Footer.jsx";
+
+// components
+import Panel from "../../components/PanelCard/Panel.jsx";
 
 // sitemap
 import { findPath, pageId } from "../../pages/sitemap.jsx";
@@ -27,7 +29,7 @@ const Game = () => {
   return (
     <ActionPanelProvider>
       <Header />
-      <ActionPanel />
+
       <main className="screen">
         <Outlet />
       </main>

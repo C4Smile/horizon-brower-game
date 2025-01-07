@@ -19,9 +19,9 @@ function PanelCard(props) {
       <section className="flex flex-col gap-2">
         <h4 className="text-white">{name}</h4>
         <div className="text-white" dangerouslySetInnerHTML={{ __html: description }} />
-        <ul className="flex">
+        <ul className="flex mt-1">
           {actions
-            .filter((action) => !action.hidden)
+            ?.filter((action) => !action.hidden)
             ?.map((action) => (
               <li key={action.id}>
                 <Action {...action} />

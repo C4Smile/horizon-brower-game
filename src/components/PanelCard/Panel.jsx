@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+/* eslint-disable react/prop-types */
+import { useEffect, useState } from "react";
 
 // icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -10,20 +11,9 @@ import Dialog from "../Dialogs/Dialog/Dialog";
 // providers
 import { useActionPanel } from "../../providers/ActionPanelProvider";
 
-// panels
-import Buildings from "./panels/Buildings";
-import Ships from "./panels/Ships";
-import Techs from "./panels/Techs";
-import Forge from "./panels/Forge";
+function Panel(props) {
+  const { children, id } = props;
 
-const Actions = {
-  Buildings: "buildings",
-  Ships: "ships",
-  Techs: "techs",
-  Guns: "guns",
-};
-
-function ActionPanel() {
   const { showPanel, setShowPanel } = useActionPanel();
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -39,23 +29,10 @@ function ActionPanel() {
     }, 400);
   };
 
-  const dialog = useMemo(() => {
-    switch (showPanel) {
-      case Actions.Buildings:
-        return <Buildings />;
-      case Actions.Ships:
-        return <Ships />;
-      case Actions.Techs:
-        return <Techs />;
-      default:
-        return <Forge />;
-    }
-  }, [showPanel]);
-
   return (
     <Dialog show={openDialog} onClose={onClose} hideCloseButton>
       <section
-        id={`${dialog}-panel`}
+        id={`${id}-panel`}
         className="relative p-4 rounded-lg bg-ocean min-w-[350px] max-w-[600px] min-h-[400px]"
       >
         <button
@@ -65,10 +42,10 @@ function ActionPanel() {
         >
           <FontAwesomeIcon icon={faClose} />
         </button>
-        {dialog}
+        {children}
       </section>
     </Dialog>
   );
 }
 
-export default ActionPanel;
+export default Panel;
