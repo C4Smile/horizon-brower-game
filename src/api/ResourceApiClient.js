@@ -26,7 +26,7 @@ export class ResourceApiClient extends BaseApiClient {
     this.baseUrl = "resources";
   }
 
-  async geyMyResources(userId) {
+  async getMyResources(userId) {
     const { data, error, status } = await makeRequest(`resources/player/${userId}`, "GET", null, {
       Authorization: "Bearer " + fromLocal(config.user, "object")?.token,
     });

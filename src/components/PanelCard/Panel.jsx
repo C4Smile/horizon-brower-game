@@ -5,10 +5,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
 // components
-import Dialog from "../../../../components/Dialogs/Dialog/Dialog";
+import Dialog from "../Dialogs/Dialog/Dialog";
 
 // providers
-import { useActionPanel } from "../../../../providers/ActionPanelProvider";
+import { useActionPanel } from "../../providers/ActionPanelProvider";
 
 // panels
 import Buildings from "./panels/Buildings";

@@ -26,6 +26,20 @@
     }
   },
   "buildings": {
-    "title": "Edificios"
+    "title": "Edificios",
+    "actions": {
+      "build": {
+        "label": "Construir",
+        "name": "construir",
+        "aria": "Encola la construccion de {{building}}"
+      },
+      "1": {
+        "label": "Ampliar",
+        "name": "construir",
+        "aria": "Encola la ampliación de {{building}}"
+      },
+      "2": { "label": "Reducir", "name": "reducir", "aria": "Encola la reducción de {{building}}" },
+      "3": { "label": "Demoler", "name": "demoler", "aria": "Encola la demolición de {{building}}" }
+    }
   }
 }

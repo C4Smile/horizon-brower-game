@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
-
-// utils
 import { staticUrlPhoto } from "../../utils/utils";
 
+// components
+import Action from "./Action";
+
 function PanelCard(props) {
-  const { action, onClick, name, description, id, image } = props;
+  const { actions = [], name, description, id, image } = props;
 
   return (
     <article id={id} className="flex gap-4">
@@ -18,11 +19,15 @@ function PanelCard(props) {
       <section className="flex flex-col gap-2">
         <h4 className="text-white">{name}</h4>
         <div className="text-white" dangerouslySetInnerHTML={{ __html: description }} />
-        <div className="flex">
-          <button onClick={(e) => onClick(e, id)} type="button">
-            {action}
-          </button>
-        </div>
+        <ul className="flex">
+          {actions
+            .filter((action) => !action.hidden)
+            ?.map((action) => (
+              <li key={action.id}>
+                <Action {...action} />
+              </li>
+            ))}
+        </ul>
       </section>
     </article>
   );

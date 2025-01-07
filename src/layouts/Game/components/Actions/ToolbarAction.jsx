@@ -4,7 +4,7 @@ import Tippy from "@tippyjs/react";
 // provider
 import { useActionPanel } from "../../../../providers/ActionPanelProvider";
 
-const Action = (props) => {
+const ToolbarAction = (props) => {
   const { image, tooltip, name, aria, id } = props;
 
   const { setShowPanel } = useActionPanel();
@@ -24,4 +24,4 @@ const Action = (props) => {
   );
 };
 
-export default Action;
+export default ToolbarAction;

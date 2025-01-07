@@ -27,7 +27,7 @@ function Resources() {
   const [resources, setResources] = useState([]);
 
   const myResourcesQuery = useQuery({
-    queryFn: () => horizonApiClient.Resource.geyMyResources(account?.horizonUser?.id),
+    queryFn: () => horizonApiClient.Resource.getMyResources(account?.horizonUser?.id),
     queryKey: [ReactQueryKeys.Resources, account?.horizonUser?.id],
     enabled: !!account?.horizonUser?.id,
   });

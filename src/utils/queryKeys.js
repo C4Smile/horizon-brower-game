@@ -1,12 +1,7 @@
 export const ReactQueryKeys = {
   Roles: "roles",
   Buildings: "buildings",
-  BuildingShips: "buildingShips",
-  BuildingCosts: "buildingCosts",
-  BuildingUpkeeps: "buildingUpkeeps",
-  BuildingProduces: "buildingProduces",
-  BuildingTypes: "buildingTypes",
-  BuildingRequirements: "buildingReqTechs",
+  BuildingsQueue: "buildingsQueue",
   Resources: "resources",
   Users: "users",
   Techs: "techs",

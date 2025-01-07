@@ -13,7 +13,7 @@ import ships from "../../../../assets/images/ships.png";
 const actions = ["buildings", "ships", "techs", "guns"];
 const images = [buildings, ships, researches, guns];
 
-const Actions = () => {
+const Toolbar = () => {
   const { t } = useTranslation();
 
   const parsedActions = useMemo(() => {
@@ -37,4 +37,4 @@ const Actions = () => {
   );
 };
 
-export default Actions;
+export default Toolbar;

@@ -3,20 +3,23 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 // icons
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHammer } from "@fortawesome/free-solid-svg-icons";
+import { faDownLong, faHammer, faTrash, faUpLong } from "@fortawesome/free-solid-svg-icons";
 
 // providers
-import { useHorizonApiClient } from "../../../../../providers/HorizonApiProvider";
-import { useGame } from "../../../../../providers/GameApiProvider";
-import { useAccount } from "../../../../../providers/AccountProvider";
+import { useHorizonApiClient } from "../../../../providers/HorizonApiProvider";
+import { useGame } from "../../../../providers/GameApiProvider";
+import { useAccount } from "../../../../providers/AccountProvider";
 
 // utils
-import { ReactQueryKeys } from "../../../../../utils/queryKeys";
+import { ReactQueryKeys } from "../../../../utils/queryKeys";
 
 // components
-import Tabs from "../../../../../components/Tabs/Tabs";
-import PanelCard from "../../../../../components/PanelCard/PanelCard";
+import Tabs from "../../../../components/Tabs/Tabs";
+import PanelCard from "../../../../components/PanelCard/PanelCard";
+
+// api
+import { BuildingQueueActions, BuildingQueueState } from "../../../../api/BuildingApiClient";
+import { useBuildAction } from "./actions/useBuild";
 
 function Buildings() {
   const { t } = useTranslation();
@@ -33,11 +36,21 @@ function Buildings() {
     enabled: !!account?.horizonUser?.id,
   });
 
+  const playerQueue = useQuery({
+    queryKey: () => horizonApiClient.Building.getMyQueue(account?.horizonUser?.id),
+    queryFn: [ReactQueryKeys.BuildingsQueue, account?.horizonUser?.id],
+    enabled: !!account?.horizonUser?.id,
+  });
+
   const [currentTab, setCurrentTab] = useState(1);
 
-  const actionText = useCallback((id) => {}, [playerBuildings]);
+  // actions
+  const build = useBuildAction({
+    userId: account?.horizonUser?.id,
+    currentBuildings: playerBuildings.data,
+  });
 
-  const onClick = useCallback((id) => {}, [playerBuildings]);
+  const actions = useCallback((row) => [build.action(row)], [build]);
 
   return (
     <>
@@ -52,7 +65,7 @@ function Buildings() {
           .filter((b) => b.typeId === currentTab)
           .map((b) => (
             <li key={b.id}>
-              <PanelCard {...b} action={actionText(b.id)} onClick={(_, id) => onClick(id)} />
+              <PanelCard {...b} actions={actions} />
             </li>
           ))}
       </ul>
