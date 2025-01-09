@@ -116,8 +116,8 @@ export const findPathInChildren = (targetPageId, basePage, currentPath = "") => 
 
 /**
  *
- * @param {*} targetPageId target page
- * @returns complete bath
+ * @param {string} targetPageId target page
+ * @returns {string} complete bath
  */
 export const findPath = (targetPageId) => {
   let path = "";

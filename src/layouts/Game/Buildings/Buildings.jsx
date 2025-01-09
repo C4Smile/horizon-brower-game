@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
 // icons
-import { faDownLong, faHammer, faTrash, faUpLong } from "@fortawesome/free-solid-svg-icons";
+import { faDownLong, faHammer, faFire, faUpLong } from "@fortawesome/free-solid-svg-icons";
 
 // providers
 import { useHorizonApiClient } from "../../../providers/HorizonApiProvider";
@@ -18,7 +18,8 @@ import Tabs from "../../../components/Tabs/Tabs";
 import PanelCard from "../../../components/PanelCard/PanelCard";
 
 // api
-import { useBuildAction } from "./actions/useBuild";
+import { useEnqueueAction } from "./actions/useEnqueue.jsx";
+import { BuildingQueueActions } from "../../../api/BuildingApiClient.js";
 
 function Buildings() {
   const { t } = useTranslation();
@@ -32,24 +33,54 @@ function Buildings() {
   const playerBuildings = useQuery({
     queryFn: () => horizonApiClient.Building.getMyBuildings(account?.horizonUser?.id),
     queryKey: [ReactQueryKeys.Buildings, account?.horizonUser?.id],
-    enabled: !!account?.horizonUser?.id,
+    enabled: !!account?.horizonUser?.id
   });
 
   const playerQueue = useQuery({
     queryFn: () => horizonApiClient.Building.getMyQueue(account?.horizonUser?.id),
     queryKey: [ReactQueryKeys.BuildingsQueue, account?.horizonUser?.id],
-    enabled: !!account?.horizonUser?.id,
+    enabled: !!account?.horizonUser?.id
   });
 
   const [currentTab, setCurrentTab] = useState(1);
 
   // actions
-  const build = useBuildAction({
+  const build = useEnqueueAction({
     userId: account?.horizonUser?.id,
-    currentBuildings: playerBuildings.data,
+    buildingAction: BuildingQueueActions.Building,
+    icon: faHammer,
+    tooltip: t("_game:buildings.actions.build.label"),
+    aria: t("_game:buildings.actions.build.aria")
   });
 
-  const actions = useCallback((row) => [build.action(row)], [build]);
+  const upgrade = useEnqueueAction({
+    userId: account?.horizonUser?.id,
+    buildingAction: BuildingQueueActions.Upgrading,
+    icon: faUpLong,
+    tooltip: t("_game:buildings.actions.upgrade.label"),
+    aria: t("_game:buildings.actions.upgrade.aria")
+  });
+
+  const downgrade = useEnqueueAction({
+    userId: account?.horizonUser?.id,
+    buildingAction: BuildingQueueActions.Downgrading,
+    icon: faDownLong,
+    tooltip: t("_game:buildings.actions.downgrade.label"),
+    aria: t("_game:buildings.actions.downgrade.aria")
+  });
+
+  const demolish = useEnqueueAction({
+    userId: account?.horizonUser?.id,
+    buildingAction: BuildingQueueActions.Demolishing,
+    icon: faFire,
+    tooltip: t("_game:buildings.actions.demolish.label"),
+    aria: t("_game:buildings.actions.demolish.aria")
+  });
+
+  const actions = useCallback((row) => {
+    const found = playerBuildings?.data?.find((b) => b.buildingId === row.id);
+    return [build.action(row, found), upgrade.action(row, !found), downgrade.action(row, !found), demolish.action(row, !found)];
+  }, [build, playerBuildings?.data, upgrade]);
 
   return (
     <>

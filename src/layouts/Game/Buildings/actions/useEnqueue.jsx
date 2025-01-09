@@ -9,25 +9,21 @@ import { faHammer, faSpinner } from "@fortawesome/free-solid-svg-icons";
 // providers
 import { queryClient, useHorizonApiClient } from "../../../../providers/HorizonApiProvider";
 
-// actions
-import { BuildingQueueActions } from "../../../../api/BuildingApiClient";
-
 // utils
 import { ReactQueryKeys } from "../../../../utils/queryKeys";
 
-export const useBuildAction = (props) => {
-  const { t } = useTranslation();
+export const useEnqueueAction = (props) => {
 
-  const { userId, currentBuildings } = props;
+  const { userId, buildingAction, icon, aria, tooltip } = props;
 
   const horizonApiClient = useHorizonApiClient();
 
-  const toBuild = useMutation({
+  const mutateFn = useMutation({
     mutationFn: ({ buildingId }) =>
       horizonApiClient.Building.enqueue({
         playerId: userId,
         buildingId,
-        action: BuildingQueueActions.Building,
+        action: buildingAction
       }),
     onSuccess: async (result) => {
       const { error, status } = result;
@@ -35,38 +31,38 @@ export const useBuildAction = (props) => {
       if (status !== 201) {
         console.error(error);
       } else {
-        queryClient.invalidateQueries([ReactQueryKeys.Buildings, userId]);
+        await queryClient.invalidateQueries([ReactQueryKeys.Buildings, userId]);
         console.info(200);
       }
     },
     onError: async (error) => {
       console.error(error);
-    },
+    }
   });
 
   const [itemId, setItemId] = useState(null);
 
   const action = useCallback(
-    (row) => {
-      const isLoading = itemId === row.id && toBuild.isPending;
+    (row, hidden) => {
+      const isLoading = itemId === row.id && mutateFn.isPending;
       return {
-        id: BuildingQueueActions.Building,
+        id: buildingAction,
         onClick: async () => {
           setItemId(row.id);
-          toBuild.mutate({ buildingId: row.id });
+          mutateFn.mutate({ buildingId: row.id });
         },
-        hidden: currentBuildings?.find((b) => b.buildingId === row.id),
+        hidden,
         icon: (
           <FontAwesomeIcon
             className="text-xl text-light-primary"
-            icon={isLoading ? faSpinner : faHammer}
+            icon={isLoading ? faSpinner : icon}
           />
         ),
-        tooltip: t("_game:buildings.actions.build.label"),
-        aria: t("_game:buildings.actions.build.aria"),
+        tooltip,
+        aria
       };
     },
-    [currentBuildings, itemId, t, toBuild],
+    [itemId, mutateFn, buildingAction, icon, tooltip, aria]
   );
 
   return { action };
