@@ -8,7 +8,7 @@ function Tabs(props) {
   const { tabs, currentTab, onChange } = props;
 
   return (
-    <ul className="flex gap-2">
+    <ul className="flex gap-4">
       {tabs?.map((tab) => (
         <li key={tab.id}>
           <button
