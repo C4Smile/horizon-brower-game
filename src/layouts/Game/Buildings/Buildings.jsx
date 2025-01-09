@@ -79,8 +79,9 @@ function Buildings() {
 
   const actions = useCallback((row) => {
     const found = playerBuildings?.data?.find((b) => b.buildingId === row.id);
-    return [build.action(row, found), upgrade.action(row, !found), downgrade.action(row, !found), demolish.action(row, !found)];
-  }, [build, playerBuildings?.data, upgrade]);
+    console.log(found)
+    return [build.action(row, found), upgrade.action(row, !found), downgrade.action(row, !found), demolish.action(row, !found && found?.level !== 1)];
+  }, [build, demolish, downgrade, playerBuildings?.data, upgrade]);
 
   return (
     <>
