@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
@@ -19,12 +19,12 @@ import PanelCard from "../../../components/PanelCard/PanelCard";
 
 // api
 import { useEnqueueAction } from "./actions/useEnqueue.jsx";
-import { BuildingQueueActions } from "../../../api/BuildingApiClient.js";
+import { BuildingQueueActions, BuildingState } from "../../../api/BuildingApiClient.js";
 
 function Buildings() {
   const { t } = useTranslation();
 
-  const { buildings, buildingTypes } = useGame();
+  const { buildings, buildingCosts, resources, buildingTypes } = useGame();
 
   const horizonApiClient = useHorizonApiClient();
 
@@ -44,7 +44,7 @@ function Buildings() {
 
   const [currentTab, setCurrentTab] = useState(1);
 
-  // actions
+  //#region Actions
   const build = useEnqueueAction({
     userId: account?.horizonUser?.id,
     buildingAction: BuildingQueueActions.Building,
@@ -82,25 +82,46 @@ function Buildings() {
     return [build.action(row, found), upgrade.action(row, !found), downgrade.action(row, !found || found?.level <= 1), demolish.action(row, !found && found?.level !== 1)];
   }, [build, demolish, downgrade, playerBuildings?.data, upgrade]);
 
-  return (
-    <>
-      <h3 className="text-light-primary text-3xl mb-3">{t("_game:buildings.title")}</h3>
-      <Tabs
-        currentTab={currentTab}
-        onChange={(_, value) => setCurrentTab(value)}
-        tabs={buildingTypes.map(({ id, name, image }) => ({ id, name, image }))}
-      />
-      <ul className="flex flex-col gap-5 mt-5">
-        {buildings
-          .filter((b) => b.typeId === currentTab)
-          .map((b) => (
-            <li key={b.id}>
-              <PanelCard {...b} actions={actions(b)} />
-            </li>
-          ))}
-      </ul>
-    </>
-  );
+  //#endregion Action
+
+  const linkedResourcesWithCost = useMemo(() => {
+    return buildingCosts.map((cost) => {
+      const found = resources.find((resource) => resource.id === cost.resourceId);
+      if (found) {
+        return ({
+          ...cost, resource: found
+        });
+      }
+    });
+  }, [buildingCosts, resources]);
+
+  const prepareBuilding = useCallback((building) => {
+    const costs = linkedResourcesWithCost?.filter((b) => b.entityId === building.id) ?? [];
+    const inPlayer = playerBuildings?.data?.find((b) => b.buildingId === building.id);
+    const toReturn = ({ ...building, costs });
+    if (inPlayer) {
+      toReturn.state = t(`_game:buildings.states.${inPlayer.state}`);
+      toReturn.level = inPlayer.level;
+    }
+
+    return toReturn;
+  }, [linkedResourcesWithCost, playerBuildings?.data, t]);
+
+  return (<>
+    <h3 className="text-light-primary text-3xl mb-3">{t("_game:buildings.title")}</h3>
+    <Tabs
+      currentTab={currentTab}
+      onChange={(_, value) => setCurrentTab(value)}
+      tabs={buildingTypes.map(({ id, name, image }) => ({ id, name, image }))}
+    />
+    <ul className="flex flex-col gap-5 mt-5">
+      {buildings
+        .filter((b) => b.typeId === currentTab)
+        .map((b) => (<li key={b.id}>
+          <PanelCard actions={actions(b)} {...prepareBuilding(b)} />
+        </li>))}
+    </ul>
+  </>);
 }
 
 export default Buildings;

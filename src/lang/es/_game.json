@@ -27,6 +27,12 @@
   },
   "buildings": {
     "title": "Edificios",
+    "states": {
+      "0": "Constructing",
+      "1": "Working",
+      "2": "Demolished",
+      "3": "Inactive"
+    },
     "actions": {
       "build": {
         "label": "Construir",
@@ -38,8 +44,16 @@
         "name": "construir",
         "aria": "Encola la ampliación de {{building}}"
       },
-      "downgrade": { "label": "Reducir", "name": "reducir", "aria": "Encola la reducción de {{building}}" },
-      "demolish": { "label": "Demoler", "name": "demoler", "aria": "Encola la demolición de {{building}}" }
+      "downgrade": {
+        "label": "Reducir",
+        "name": "reducir",
+        "aria": "Encola la reducción de {{building}}"
+      },
+      "demolish": {
+        "label": "Demoler",
+        "name": "demoler",
+        "aria": "Encola la demolición de {{building}}"
+      }
     }
   }
 }
