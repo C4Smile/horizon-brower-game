@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -14,6 +11,8 @@ export default {
         primary: "#B8860B",
         "light-primary": "#c69e3b",
         dark: "#2B2926",
+        warning: "#fef08a",
+        success: "#16a34a",
         error: "#ff0033",
       },
       boxShadow: {
@@ -64,4 +63,4 @@ export default {
     },
   },
   plugins: [],
-}
+};
