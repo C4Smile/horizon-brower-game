@@ -45,7 +45,7 @@ function Resources() {
             inStock: res.inStock < res.maxCapacity ? res.inStock + res.currentFactor : res.inStock,
           })),
         );
-      }, 3000);
+      }, 4000);
 
       return () => {
         clearInterval(interval);
