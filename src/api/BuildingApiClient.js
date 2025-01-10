@@ -72,7 +72,6 @@ export class BuildingApiClient extends BaseApiClient {
     const { data, error, status } = await makeRequest(`${this.baseUrl}/enqueue`, "POST", dto, {
       Authorization: "Bearer " + fromLocal(config.user, "object")?.token,
     });
-
     return { data, error, status };
   }
 }
