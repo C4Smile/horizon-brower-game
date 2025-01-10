@@ -6,9 +6,7 @@ import Action from "./Action";
 import Cost from "./Cost.jsx";
 
 function PanelCard(props) {
-  const { actions = [], name, description, id, image, costs, state, level } = props;
-
-  console.log(costs, level, state);
+  const { actions = [], name, description, id, image, costs, state, level, realLevel } = props;
 
   return (
     <article id={id} className="flex gap-4">
@@ -17,15 +15,24 @@ function PanelCard(props) {
         alt={name}
         width={144}
         height={144}
-        className="w-36 h-36 object-cover rounded-lg"
+        className="w-36 object-cover rounded-lg"
       />
       <section className="flex flex-col gap-2">
-        <h4 className="text-white">{name}</h4>
+        <div className="flex gap-2 items-center">
+          <h4 className="text-white text-xl">{name}</h4>
+        </div>
+
         <div className="text-white" dangerouslySetInnerHTML={{ __html: description }} />
-        <ul>
+        {level || state ? (
+          <div className="flex gap-3">
+            {level ? <p className="text-white text-sm">{level}</p> : null}
+            {state ? <p className="text-white text-sm">{state}</p> : null}
+          </div>
+        ) : null}
+        <ul className="flex gap-5">
           {costs?.map((cost) => (
             <li key={cost.id}>
-              <Cost {...cost} />
+              <Cost {...cost} level={realLevel} />
             </li>
           ))}
         </ul>
