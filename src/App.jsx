@@ -13,6 +13,7 @@ import { useAccount } from "./providers/AccountProvider";
 
 // components
 import SplashScreen from "./partials/loading/SplashScreen";
+import Notification from "./partials/Notification";
 
 // Generals
 const NotFound = loadable(() => import("./pages/NotFound/NotFound"));
@@ -64,6 +65,7 @@ export const App = () => {
 
   return (
     <>
+      <Notification />
       <SplashScreen visible={loaded} />
       <Suspense>
         <Routes>
