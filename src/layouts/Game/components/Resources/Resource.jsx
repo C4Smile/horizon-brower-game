@@ -32,7 +32,7 @@ const Resource = (props) => {
           src={staticUrlPhoto(resourceData?.image ?? "")}
           alt={resourceData?.name}
         />
-        <p className="text-light-primary">{inStock}</p>
+        <p className="text-light-primary">{Math.floor(inStock)}</p>
       </div>
     </Tippy>
   );
