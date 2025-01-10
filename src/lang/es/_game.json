@@ -26,12 +26,17 @@
     }
   },
   "buildings": {
+    "notifications": {
+      "building.completed": "Construction completed",
+      "201": "Encolado correctamente",
+      "406": "No hay suficientes recursos"
+    },
     "title": "Edificios",
     "states": {
-      "0": "Constructing",
-      "1": "Working",
-      "2": "Demolished",
-      "3": "Inactive"
+      "0": "Siendo construido",
+      "1": "Trabajando",
+      "2": "Demolido",
+      "3": "Inactivo"
     },
     "actions": {
       "build": {
