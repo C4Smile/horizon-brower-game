@@ -20,7 +20,7 @@ import PanelCard from "../../../components/PanelCard/PanelCard";
 
 // api
 import { useEnqueueAction } from "./actions/useEnqueue.jsx";
-import { BuildingQueueActions, BuildingState } from "../../../api/BuildingApiClient.js";
+import { BuildingQueueActions } from "../../../api/BuildingApiClient.js";
 
 function Buildings() {
   const { t } = useTranslation();
@@ -85,7 +85,7 @@ function Buildings() {
         build.action(row, found),
         upgrade.action(row, !found),
         downgrade.action(row, !found || found?.level <= 1),
-        demolish.action(row, !found && found?.level !== 1),
+        demolish.action(row, !found || found?.level !== 1),
       ];
     },
     [build, demolish, downgrade, playerBuildings?.data, upgrade],
