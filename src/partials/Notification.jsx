@@ -16,7 +16,6 @@ const Notification = memo(() => {
   const { notification, setNotification, params, state } = useNotification();
 
   const [notificationOpen, setNotificationOpen] = useState(Boolean(notification.length));
-
   const localState = useMemo(() => {
     switch (notification) {
       case "notConnected":
@@ -48,7 +47,7 @@ const Notification = memo(() => {
       ugly: "bg-red-500",
     };
     if (state.length) return lNotificationClasses[state];
-    return localState === "" ? lNotificationClasses.bad : lNotificationClasses[localState];
+    return localState === "" ? lNotificationClasses.good : lNotificationClasses[localState];
   }, [localState, state]);
 
   useEffect(() => {

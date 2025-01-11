@@ -33,10 +33,12 @@ export const useEnqueueAction = (props) => {
       const { error } = result;
       if (error) {
         console.log(error);
-        setNotification(t(`_game:buildings.notifications.${error.status}`, {}, "error"));
+        if (error.status === 500)
+          setNotification(t(`_accessibility:messages.${error.status}`, {}, "bad"));
+        else setNotification(t(`_game:buildings.notifications.${error.status}`, {}, "bad"));
       } else {
         await queryClient.invalidateQueries([ReactQueryKeys.Buildings, userId]);
-        setNotification(t("_game:buildings.notifications.201"));
+        setNotification(t("_game:buildings.notifications.201", {}, "good"));
       }
     },
     onError: async (error) => {

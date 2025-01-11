@@ -89,6 +89,6 @@
     "404": "{{model}} no encontrado",
     "409": "{{model}} ya existe",
     "429": "Límite de correos electrónicos excedido",
-    "500": "Algo salió mal"
+    "500": "Ha occurido un error en el servidor"
   }
 }
