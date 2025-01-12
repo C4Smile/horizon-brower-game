@@ -38,7 +38,7 @@ export const useEnqueueAction = (props) => {
         else setNotification(t(`_game:buildings.notifications.${error.status}`, {}, "bad"));
       } else {
         await queryClient.invalidateQueries([ReactQueryKeys.Buildings, userId]);
-        setNotification(t("_game:buildings.notifications.201", {}, "good"));
+        await queryClient.invalidateQueries([ReactQueryKeys.BuildingsQueue, userId]);
       }
     },
     onError: async (error) => {

@@ -1,5 +1,4 @@
-/* eslint-disable react/prop-types */
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 
@@ -7,15 +6,17 @@ import { useTranslation } from "react-i18next";
 import { faDownLong, faHammer, faFire, faUpLong } from "@fortawesome/free-solid-svg-icons";
 
 // providers
-import { useHorizonApiClient } from "../../../providers/HorizonApiProvider";
+import { queryClient, useHorizonApiClient } from "../../../providers/HorizonApiProvider";
 import { useGame } from "../../../providers/GameApiProvider";
 import { useAccount } from "../../../providers/AccountProvider";
+import { useSocket } from "../../../providers/SocketProvider.jsx";
 
 // utils
 import { ReactQueryKeys } from "../../../utils/queryKeys";
 
 // components
 import Tabs from "../../../components/Tabs/Tabs";
+import Queue from "../../../components/PanelCard/Queue.jsx";
 import PanelCard from "../../../components/PanelCard/PanelCard";
 
 // api
@@ -24,6 +25,8 @@ import { BuildingQueueActions } from "../../../api/BuildingApiClient.js";
 
 function Buildings() {
   const { t } = useTranslation();
+
+  const { socket, addEvent } = useSocket();
 
   const { buildings, buildingCosts, resources, buildingTypes } = useGame();
 
@@ -123,15 +126,26 @@ function Buildings() {
     [linkedResourcesWithCost, playerBuildings?.data, t],
   );
 
+  useEffect(() => {
+    if (socket) {
+      addEvent("building.completed", () => {
+        queryClient.invalidateQueries([ReactQueryKeys.Buildings, account?.horizonUser?.id]);
+        queryClient.invalidateQueries([ReactQueryKeys.BuildingsQueue, account?.horizonUser?.id]);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
+
   return (
     <>
       <h3 className="text-light-primary text-3xl mb-3">{t("_game:buildings.title")}</h3>
+      <Queue queue={playerQueue} entity="building" />
       <Tabs
         currentTab={currentTab}
         onChange={(_, value) => setCurrentTab(value)}
         tabs={buildingTypes.map(({ id, name, image }) => ({ id, name, image }))}
       />
-      <ul className="flex flex-col gap-5 mt-5">
+      <ul className="flex flex-col gap-5 mt-5 h-[calc(95vh-100px)] overflow-auto">
         {buildings
           .filter((b) => b.typeId === currentTab)
           .map((b) => (

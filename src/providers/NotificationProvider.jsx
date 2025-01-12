@@ -15,7 +15,7 @@ const NotificationProvider = (props) => {
   const { children } = props;
   const [notification, setNotification] = useState("");
   const [params, setParams] = useState({});
-  const [state, setState] = useState("good");
+  const [state, setState] = useState("");
 
   /**
    *

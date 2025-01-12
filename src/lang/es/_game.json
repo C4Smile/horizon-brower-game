@@ -29,7 +29,8 @@
     "notifications": {
       "building.completed": "Construction completed",
       "201": "Encolado correctamente",
-      "406": "No hay suficientes recursos"
+      "406": "No hay suficientes recursos",
+      "409": "Cola de edificios llena"
     },
     "title": "Edificios",
     "states": {

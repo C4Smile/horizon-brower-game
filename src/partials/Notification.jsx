@@ -47,7 +47,7 @@ const Notification = memo(() => {
       ugly: "bg-red-500",
     };
     if (state.length) return lNotificationClasses[state];
-    return localState === "" ? lNotificationClasses.good : lNotificationClasses[localState];
+    return localState === "" ? lNotificationClasses.bad : lNotificationClasses[localState];
   }, [localState, state]);
 
   useEffect(() => {
