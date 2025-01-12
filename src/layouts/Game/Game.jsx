@@ -16,6 +16,7 @@ import { findPath, pageId } from "../../pages/sitemap.jsx";
 
 // providers
 import { ActionPanelProvider } from "../../providers/ActionPanelProvider.jsx";
+import { SocketProvider } from "../../providers/SocketProvider.jsx";
 
 const Game = () => {
   const navigate = useNavigate();
@@ -27,14 +28,16 @@ const Game = () => {
   }, [account, navigate]); */
 
   return (
-    <ActionPanelProvider>
-      <Header />
+    <SocketProvider>
+      <ActionPanelProvider>
+        <Header />
 
-      <main className="screen">
-        <Outlet />
-      </main>
-      <Footer />
-    </ActionPanelProvider>
+        <main className="screen">
+          <Outlet />
+        </main>
+        <Footer />
+      </ActionPanelProvider>
+    </SocketProvider>
   );
 };
 
