@@ -16,7 +16,7 @@ import { ReactQueryKeys } from "../../../utils/queryKeys";
 
 // components
 import Tabs from "../../../components/Tabs/Tabs";
-import Queue from "../../../components/PanelCard/Queue.jsx";
+import Queue from "../../../components/PanelCard/Queue/Queue.jsx";
 import PanelCard from "../../../components/PanelCard/PanelCard";
 
 // api
@@ -139,13 +139,13 @@ function Buildings() {
   return (
     <>
       <h3 className="text-light-primary text-3xl mb-3">{t("_game:buildings.title")}</h3>
-      <Queue queue={playerQueue} entity="building" />
+      <Queue playerQueue={playerQueue} collection="buildings" entity="building" />
       <Tabs
         currentTab={currentTab}
         onChange={(_, value) => setCurrentTab(value)}
         tabs={buildingTypes.map(({ id, name, image }) => ({ id, name, image }))}
       />
-      <ul className="flex flex-col gap-5 mt-5 h-[calc(95vh-100px)] overflow-auto">
+      <ul className="flex flex-col gap-5 mt-5">
         {buildings
           .filter((b) => b.typeId === currentTab)
           .map((b) => (

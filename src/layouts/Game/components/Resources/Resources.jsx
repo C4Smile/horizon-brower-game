@@ -5,7 +5,9 @@ import { sortBy } from "some-javascript-utils/Array";
 
 // providers
 import { useHorizonApiClient } from "../../../../providers/HorizonApiProvider.jsx";
+import { useNotification } from "../../../../providers/NotificationProvider.jsx";
 import { useAccount } from "../../../../providers/AccountProvider.jsx";
+import { useSocket } from "../../../../providers/SocketProvider.jsx";
 
 // utils
 import { ReactQueryKeys } from "../../../../utils/queryKeys.js";
@@ -25,6 +27,10 @@ function Resources() {
   const horizonApiClient = useHorizonApiClient();
 
   const [resources, setResources] = useState([]);
+
+  const { setNotification } = useNotification();
+
+  const { socket, addEvent } = useSocket();
 
   const myResourcesQuery = useQuery({
     queryFn: () => horizonApiClient.Resource.getMyResources(account?.horizonUser?.id),
@@ -52,6 +58,15 @@ function Resources() {
       };
     }
   }, [resources]);
+
+  useEffect(() => {
+    if (socket) {
+      addEvent("not.resources", (payload) => {
+        console.log(payload);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
 
   return (
     <ul className="flex gap-3 bg-dark pb-1 pt-2 px-4 rounded-lg">

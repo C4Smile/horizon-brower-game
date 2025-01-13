@@ -33,7 +33,7 @@ function Panel(props) {
     <Dialog show={openDialog} onClose={onClose} hideCloseButton>
       <section
         id={`${id}-panel`}
-        className="relative p-4 rounded-lg bg-ocean min-w-[350px] max-w-[600px] min-h-[400px]"
+        className="relative p-4 rounded-lg bg-ocean min-w-[350px] max-w-[600px] min-h-[400px] max-h-[95vh] overflow-auto"
       >
         <button
           type="button"

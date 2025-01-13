@@ -40,6 +40,10 @@
       "3": "Inactivo"
     },
     "actions": {
+      "0": "Construyendo",
+      "1": "Ampliando",
+      "2": "Reduciendo",
+      "3": "Demoliendo",
       "build": {
         "label": "Construir",
         "name": "construir",
